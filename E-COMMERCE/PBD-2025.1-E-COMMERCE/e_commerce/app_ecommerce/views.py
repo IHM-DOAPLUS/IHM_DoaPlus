@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
@@ -36,6 +36,6 @@ def logout(request):
     request.session.flush()
 
     if hasattr(request, "user"):
-        request.user = User()
+        request.user = AnonymousUser()
 
     return redirect('login')
