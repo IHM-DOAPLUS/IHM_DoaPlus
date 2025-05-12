@@ -1,16 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+
+{% endblock %}
 {% block body %}
-<h1>tela de login</h1>
-<form action="" method="post">
-    {% csrf_token %}
-    <div>
-        <label for="{{ form.username.id_for_label }}">Usuário:</label>
-        {{ form.username }}
+<main class="w-100 d-flex justify-content-center align-items-center h-100"
+    style="height: 100vh !important; background-color: #f5f5f5;">
+    <div class="col-10 col-md-6 col-lg-4 m-auto p-4 shadow shadow-sm bg-white">
+        <form action="{% url 'authentication:login' %}" method="POST">
+            {% csrf_token %}
+            <div class="text-center">
+                <img class="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+            </div>
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <div class="d-flex flex-column gap-2">
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
+                        name="{{form.username.name}}">
+                    <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+                        name="{{form.password.name}}">
+                    <label for="floatingPassword">Password</label>
+                </div>
+            </div>
+            <div>
+                <div class="form-check text-start my-3"> <input class="form-check-input" type="checkbox"
+                        value="remember-me" id="checkDefault">
+                    <label class="form-check-label" for="checkDefault">Remember me</label>
+                </div>
+                <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2025</p>
+            </div>
+
+        </form>
     </div>
-    <div>
-        <label for="{{ form.password.id_for_label }}">Password:</label>
-        {{ form.password}}
-    </div>
-    </div>
-    <button>Entrar</button>
-</form>
+</main>
 {% endblock %}

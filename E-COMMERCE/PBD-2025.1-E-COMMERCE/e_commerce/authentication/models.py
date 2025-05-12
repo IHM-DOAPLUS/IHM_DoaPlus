@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, Group as _Group, Permission
 
 
-
 class UserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, phone, password=None):
         if not email:
@@ -31,11 +30,9 @@ class UserManager(BaseUserManager):
         return user
 
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
-    
 
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, blank=True)
@@ -43,10 +40,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'phone']
-    
+
     objects = UserManager()
 
     class Meta:
@@ -63,7 +60,8 @@ class Group(_Group):
         proxy = True
         verbose_name = 'Group'
         verbose_name_plural = 'Groups'
-         
+
+
 class Gerente(User):
     class Meta:
         proxy = True
