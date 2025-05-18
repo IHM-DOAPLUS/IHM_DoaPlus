@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: #f8f9fa;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: #212529;
+            color: #fff;
+            width: 220px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 56px;
+            transition: all 0.2s;
+        }
+
+        .sidebar .nav-link {
+            color: #fff;
+            font-weight: 500;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 0 30px 30px 0;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: #343a40;
+            color: #ffc451;
+        }
+
+        .sidebar .nav-link i {
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            margin-left: 220px;
+            padding: 2.5rem 2rem 2rem 2rem;
+            min-height: 100vh;
+            background: #f8f9fa;
+            transition: margin-left 0.2s;
+        }
+
+        .header {
+            height: 56px;
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 2rem;
+            position: fixed;
+            top: 0;
+            left: 0px;
+            right: 0;
+            z-index: 100;
+            transition: left 0.2s;
+            width: 100%;
+        }
+
+        .profile-circle {
+            width: 40px;
+            height: 40px;
+            background: #ffc451;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #151515;
+            font-weight: bold;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: background 0.2s;
+        }
+
+        .profile-circle:hover {
+            background: #e6b200;
+            color: #fff;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                width: 60px;
+                padding-top: 56px;
+            }
+
+            .sidebar .nav-link span {
+                display: none;
+            }
+
+            .main-content,
+            .header {
+                margin-left: 0px;
+                left: 0px;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content,
+            .header {
+                margin-left: 0;
+                left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar d-flex flex-column position-fixed">
+        <div class="py-4 px-3 mb-4 border-bottom text-center">
+            <span class="fs-4 fw-bold">Menu</span>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#"><i class="bi bi-building"></i> <span>Empresa</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> <span>Itens</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="bi bi-list"></i> <span>Outra opção</span></a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header class="header" style="left:0; width:100%;">
+        <div class="container-fluid d-flex justify-content-end align-items-center" style="height: 56px;">
+            <div class="profile-circle" title="Perfil">
+                <i class="bi bi-person"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content" style="padding-top: 80px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <h1 class="mb-4">Bem-vindo ao Dashboard</h1>
+                    <div class="alert alert-info" role="alert">
+                        Selecione uma opção no menu lateral para começar.
+                    </div>
+                    <!-- Conteúdo dinâmico pode ser adicionado aqui -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>
