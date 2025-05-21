@@ -17,6 +17,7 @@ def starter_page(request):
 def service(request):
     return render(request, 'service-details.html')
 
+@login_required
 def dash(request):
     return render(request, 'dash.html')
 

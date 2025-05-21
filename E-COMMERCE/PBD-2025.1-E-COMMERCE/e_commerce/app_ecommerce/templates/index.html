@@ -61,9 +61,9 @@
 
           <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
             <li data-filter="*" class="filter-active">All</li>
-            <li data-filter=".filter-app">App</li>
-            <li data-filter=".filter-product">Card</li>
-            <li data-filter=".filter-branding">Web</li>
+            <li data-filter=".filter-app">Mais vendidos</li>
+            <li data-filter=".filter-product">Promocao</li>
+            <li data-filter=".filter-branding">Diversos</li>
           </ul><!-- End Portfolio Filters -->
 
           <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
@@ -71,14 +71,16 @@
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
               <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-1.jpg' %}" class="img-fluid" alt="">
               <div class="portfolio-info">
-                <h4>App 1</h4>
-                <p>Lorem ipsum, dolor sit</p>
-                <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-1.jpg' %}" title="App 1"
-                  data-gallery="portfolio-gallery-app" class="glightbox preview-link">
-                  <i class="bi bi-zoom-in"></i>
-                </a>
-                <a href="portfolio-details.html" title="More Details" class="details-link">
-                  <i class="bi bi-link-45deg"></i>
+                <a href="{% url 'ecommerce:portifolio' %}">
+                  <h4>App 1</h4>
+                  <p>Lorem ipsum, dolor sit</p>
+                  <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-1.jpg' %}" title="App 1"
+                    data-gallery="portfolio-gallery-app" class="glightbox preview-link">
+                    <i class="bi bi-zoom-in"></i>
+                  </a>
+                  <a href="portfolio-details.html" title="More Details" class="details-link">
+                    <i class="bi bi-link-45deg"></i>
+                  </a>
                 </a>
               </div>
             </div><!-- End Portfolio Item -->
@@ -214,30 +216,77 @@
     <!-- ... (restante do código permanece igual) ... -->
 
   </main>
+  <footer id="footer" class="footer dark-background">
 
-  <footer id="footer" class="footer dark-background mt-5" style="position: relative;">
-    <div class="container text-center py-4 position-relative">
-      <p class="mb-1" style="color: #fff;">
-        © <span>Copyright</span>
-        <strong class="px-1 sitename" style="color: #ffc451;">GP</strong>
-        <span>Todos os direitos reservados</span>
-      </p>
-      <div class="credits" style="color: #bbb; font-size: 0.95rem;">
-        Designed by <a href="https://bootstrapmade.com/" style="color: #ffc451;">BootstrapMade</a>
-        &nbsp;|&nbsp;
-        Distributed by <a href="https://themewagon.com" style="color: #ffc451;">ThemeWagon</a>
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6 footer-about">
+            <a href="{% url 'ecommerce:index' %}" class="logo d-flex align-items-center">
+              <span class="sitename">GP</span>
+            </a>
+            <div class="footer-contact pt-3">
+              <p>A108 Adam Street</p>
+              <p>New York, NY 535022</p>
+              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+              <p><strong>Email:</strong> <span>info@example.com</span></p>
+            </div>
+            <div class="social-links d-flex mt-4">
+              <a href=""><i class="bi bi-twitter-x"></i></a>
+              <a href=""><i class="bi bi-facebook"></i></a>
+              <a href=""><i class="bi bi-instagram"></i></a>
+              <a href=""><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="{% url 'ecommerce:index' %}"> Home</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="{% url 'ecommerce:index' %}#about"> About us</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="{% url 'ecommerce:index' %}#services"> Services</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Terms of service</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Web Design</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Web Development</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Product Management</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Marketing</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#"> Graphic Design</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <!-- Botão de login no canto inferior direito do rodapé -->
-      <a href="{% url 'authentication:login' %}" class="btn btn-primary btn-lg" style="
+    </div>
+
+    <div class="copyright">
+      <div class="container text-center">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">GP</strong> <span>Todos os direitos reservados</span>
+        </p>
+        <div class="credits">
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
+            href="https://themewagon.com">ThemeWagon</a>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- Botão de login no canto inferior direito do rodapé -->
+    <a href="{% url 'authentication:login' %}" class="btn btn-primary btn-lg" style="
         position: absolute;
         right: 24px;
         bottom: 24px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         z-index: 10;
       ">
-        Efetuar Login
-      </a>
+      Efetuar Login
+    </a>
     </div>
+
   </footer>
 
   <!-- Scroll Top -->

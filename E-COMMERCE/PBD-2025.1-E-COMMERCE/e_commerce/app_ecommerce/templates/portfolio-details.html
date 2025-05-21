@@ -33,66 +33,10 @@
 </head>
 
 <body class="portfolio-details-page">
-
-  <header id="header" class="header d-flex align-items-center position-relative">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-
-      <a href="{% url 'ecommerce:index' %}" class="logo d-flex align-items-center me-auto me-lg-0">
-        <h1 class="sitename">GP</h1>
-        <span>.</span>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'ecommerce:index' %}#hero">Home</a></li>
-          <li><a href="{% url 'ecommerce:index' %}#about">About</a></li>
-          <li><a href="{% url 'ecommerce:index' %}#services">Services</a></li>
-          <li><a href="{% url 'ecommerce:index' %}#portfolio">Portfolio</a></li>
-          <li><a href="{% url 'ecommerce:index' %}#team">Team</a></li>
-          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
-                    class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
-            </ul>
-          </li>
-          <li><a href="{% url 'ecommerce:index' %}#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="{% url 'ecommerce:index' %}#about">Get Started</a>
-
-    </div>
-  </header>
-
   <main class="main">
 
     <!-- Page Title -->
     <div class="page-title" data-aos="fade">
-      <div class="heading">
-        <div class="container">
-          <div class="row d-flex justify-content-center text-center">
-            <div class="col-lg-8">
-              <h1>Portfolio Details</h1>
-              <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas
-                consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit
-                quaerat ipsum dolorem.</p>
-            </div>
-          </div>
-        </div>
-      </div>
       <nav class="breadcrumbs">
         <div class="container">
           <ol>
@@ -154,21 +98,27 @@
 
           <div class="col-lg-4">
             <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
-              <h3>Project information</h3>
+              <h3>Nome do item</h3>
               <ul>
-                <li><strong>Category</strong>: Web design</li>
-                <li><strong>Client</strong>: ASU Company</li>
-                <li><strong>Project date</strong>: 01 March, 2020</li>
-                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
+                <li><strong>Preco</strong>: R$100,00</li>
+                <li><strong>Cor</strong>: Preto</li>
+                <li><strong>Em estoque</strong>: 01</li>
+                <li><strong>Em construcao</strong>: ...</li>
               </ul>
             </div>
             <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
-              <h2>Exercitationem repudiandae officiis neque suscipit</h2>
+              <h2>Descricao</h2>
               <p>
-                Autem ipsum nam porro corporis rerum. Quis eos dolorem eos itaque inventore commodi labore quia quia.
-                Exercitationem repudiandae officiis neque suscipit non officia eaque itaque enim. Voluptatem officia
-                accusantium nesciunt est omnis tempora consectetur dignissimos. Sequi nulla at esse enim cum deserunt
-                eius.
+                Mergulhe no som com o ThunderBeats X9, o fone sem fio que transforma qualquer playlist em uma
+                experiência de outro nível. Com drivers de 40mm e tecnologia Noise Canceling ativa, ele isola até o
+                pensamento negativo da ex que te deixou ouvindo Marília Mendonça.
+
+                Possui conexão Bluetooth 5.3 ultraestável, microfone embutido com cancelamento de ruído pra chamadas
+                nítidas, e bateria que dura até 42 horas seguidas (ou o tempo exato pra maratonar 3 temporadas da sua
+                série favorita sem parar).
+
+                Design ergonômico, dobrável e leve como o beat do seu artista favorito. Ideal pra treinar, trampar,
+                viajar ou só ignorar a galera do busão.
               </p>
             </div>
           </div>
