@@ -1,12 +1,15 @@
 from django import forms
 from django.contrib import admin
 from .models import _Group, Group, User
+from app_ecommerce.models import Itens, Empresa, ItemImage
 from django.core.exceptions import ValidationError
 
 
 class UserForm(forms.ModelForm):
-    new_password = forms.CharField(required=False, widget=forms.PasswordInput())
-    confirm_password = forms.CharField(required=False, widget=forms.PasswordInput())
+    new_password = forms.CharField(
+        required=False, widget=forms.PasswordInput())
+    confirm_password = forms.CharField(
+        required=False, widget=forms.PasswordInput())
 
     class Meta:
         model = User
@@ -35,12 +38,15 @@ class UserAdmin(admin.ModelAdmin):
 
     def get_fieldsets(self, request, obj=...):
         fieldsets = [
-            ("User Info", {"fields": ["email", "first_name", "last_name", "phone"]}),
+            ("User Info", {"fields": [
+             "email", "first_name", "last_name", "phone"]}),
         ]
         if obj:
             fieldsets += [
-                ("Simple permissions", {"fields": ["is_staff", "is_active", "is_superuser"]}),
-                ("Advanced permissions", {"fields": ["user_permissions", "groups"]}),
+                ("Simple permissions", {"fields": [
+                 "is_staff", "is_active", "is_superuser"]}),
+                ("Advanced permissions", {
+                 "fields": ["user_permissions", "groups"]}),
             ]
         else:
             fieldsets.append(
@@ -51,3 +57,6 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.unregister(_Group)
 admin.site.register(Group)
+admin.site.register(Itens)
+admin.site.register(ItemImage)
+admin.site.register(Empresa)

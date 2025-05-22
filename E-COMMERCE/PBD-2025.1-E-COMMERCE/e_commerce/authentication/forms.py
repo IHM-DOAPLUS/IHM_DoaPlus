@@ -13,14 +13,8 @@ class UserLoginForm(forms.ModelForm):
 
 
 class UserRegistrationForm(forms.ModelForm):
-    username = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Digite seu e-mail'
-    }))
-    first_name = forms.CharField(label='Nome', widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Digite seu nome'
-    }))
+    username = forms.EmailField(label='Email', max_length=254)
+    first_name = forms.CharField(label='Nome', max_length=244)
     last_name = forms.CharField(label='Sobrenome', widget=forms.TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'Digite seu sobrenome'

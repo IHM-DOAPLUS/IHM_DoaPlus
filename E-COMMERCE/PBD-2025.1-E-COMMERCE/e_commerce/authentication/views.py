@@ -14,7 +14,7 @@ def user_page(request):
         if form.is_valid():
             form.save()
             messages.success(request, "User registered successfully!")
-            return redirect('ecommerce:home')
+            return redirect('ecommerce:index')
         else:
             messages.error(request, "Please correct the errors below.")
     else:

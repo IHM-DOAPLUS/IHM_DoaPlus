@@ -11,6 +11,8 @@ urlpatterns = [
     path('service/', views.service, name='service'),
     path('login/dash/', views.dash, name='dash'),
     path('user/', views.user, name='user'),
+    path('item/', views.item, name='item'),
+
 
 
 

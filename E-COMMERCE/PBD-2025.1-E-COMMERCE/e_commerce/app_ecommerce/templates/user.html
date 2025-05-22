@@ -16,7 +16,7 @@
 <body>
     <main class="w-100 d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="register-card">
-            <form method="post" action="">
+            <form method="post" action="{% url 'authentication:user' %}">
                 {% csrf_token %}
                 <div class="register-logo">
                     <img src="{% static 'assets/img/logo.png' %}" alt="Logo" width="48" height="48"
