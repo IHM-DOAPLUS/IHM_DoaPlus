@@ -4,7 +4,6 @@ from django.shortcuts import render
 from .forms import UserLoginForm, UserRegistrationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from .models import User
 
 
 def user_page(request):

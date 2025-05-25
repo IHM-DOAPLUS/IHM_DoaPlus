@@ -9,9 +9,14 @@ urlpatterns = [
     path('portifolio/', views.portifolio, name='portifolio'),
     path('starter/', views.starter_page, name='starter'),
     path('service/', views.service, name='service'),
-    path('login/dash/', views.dash, name='dash'),
+    path('dash/', views.dash, name='dash'),
     path('user/', views.user, name='user'),
     path('item/', views.item, name='item'),
+    path('empresas/', views.empresas, name='empresas'),
+    path('itens/', views.itens, name='itens'),
+    path('usuarios/', views.usuarios, name='usuarios'),
+
+
 
 
 

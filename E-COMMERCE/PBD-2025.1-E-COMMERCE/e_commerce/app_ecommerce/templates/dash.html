@@ -10,7 +10,6 @@
     <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
     <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
     <link href="{% static 'assets/css/dashboard.css' %}" rel="stylesheet">
-
 </head>
 
 <body>
@@ -21,42 +20,100 @@
         </div>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="#"><i class="bi bi-building"></i> <span>Empresa</span></a>
+                <a class="nav-link" href="{% url 'ecommerce:empresas' %}" data-url="{% url 'ecommerce:empresas' %}">
+                    <i class="bi bi-building"></i>
+                    <span>Empresa</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> <span>Itens</span></a>
+                <a class="nav-link" href="{% url 'ecommerce:itens' %}" data-url="{% url 'ecommerce:itens' %}">
+                    <i class="bi bi-box-seam"></i>
+                    <span>Itens</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="bi bi-list"></i> <span>Outra opção</span></a>
+                <a class="nav-link" href="{% url 'ecommerce:usuarios' %}" data-url="{% url 'ecommerce:usuarios' %}">
+                    <i class="bi bi-list"></i>
+                    <span>Usuário</span>
+                </a>
             </li>
         </ul>
     </nav>
 
-    <!-- Header -->
-    <header class="header" style="left:0; width:100%;">
-        <div class="container-fluid d-flex justify-content-end align-items-center" style="height: 56px;">
-            <div class="profile-circle" title="Perfil">
-                <i class="bi bi-person"></i>
-            </div>
+    <!-- Header com ícone de perfil -->
+    <header class="header d-flex justify-content-end align-items-center px-4"
+        style="left: 0; width: 100%; height: 56px; position: fixed; top: 0; background-color: #fff; z-index: 999;">
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="profile-circle bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 36px; height: 36px;">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                <li><a class="dropdown-item" href="#">Perfil</a></li>
+                <li><a class="dropdown-item" href="{% url 'authentication:logout' %}">Sair</a></li>
+            </ul>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="main-content" style="padding-top: 80px;">
+    <main class="main-content" style="padding-top: 80px; margin-left: 200px;">
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                    <h1 class="mb-4">Bem-vindo ao Dashboard</h1>
-                    <div class="alert alert-info" role="alert">
-                        Selecione uma opção no menu lateral para começar.
+                    <div id="conteudo-central">
+                        <h1 class="mb-4">Bem-vindo ao Dashboard</h1>
+                        <div class="alert alert-info" role="alert">
+                            Selecione uma opção no menu lateral para começar.
+                        </div>
                     </div>
-                    <!-- Conteúdo dinâmico pode ser adicionado aqui -->
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- Scripts -->
     <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        document.querySelectorAll('.nav-link[data-url]').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const url = this.getAttribute('data-url');
+
+                // Atualiza a URL no navegador sem recarregar a página
+                window.history.pushState({}, '', url);
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao carregar conteúdo.');
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        document.getElementById('conteudo-central').innerHTML = html;
+                    })
+                    .catch(error => {
+                        document.getElementById('conteudo-central').innerHTML = `
+                            <div class="alert alert-danger" role="alert">
+                                ${error.message}
+                            </div>`;
+                    });
+            });
+        });
+
+        // Suporte ao botão de voltar/avançar do navegador
+        window.addEventListener('popstate', () => {
+            const url = window.location.pathname;
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('conteudo-central').innerHTML = html;
+                });
+        });
+    </script>
 </body>
 
 </html>

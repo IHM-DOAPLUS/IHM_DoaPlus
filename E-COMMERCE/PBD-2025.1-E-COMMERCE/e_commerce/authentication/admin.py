@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from .models import _Group, Group, User
-from app_ecommerce.models import Itens, Empresa, ItemImage
+from app_ecommerce.models import Itens, Empresa
 from django.core.exceptions import ValidationError
 
 
@@ -58,5 +58,4 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.unregister(_Group)
 admin.site.register(Group)
 admin.site.register(Itens)
-admin.site.register(ItemImage)
 admin.site.register(Empresa)

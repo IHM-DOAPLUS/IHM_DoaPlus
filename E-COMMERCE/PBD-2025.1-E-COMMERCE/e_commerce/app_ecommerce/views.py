@@ -28,7 +28,6 @@ def dash(request):
 def user(request):
     return render(request, 'user.html')
 
-
 def item(request):
     form = RegisterItem()
     if request.method == 'POST':
@@ -40,3 +39,25 @@ def item(request):
         form = RegisterItem()
     contex = {'form': form}
     return render(request, 'item.html', contex)
+
+def empresas(request):
+    return render(request, 'empresas.html')
+
+def itens(request):
+    return render(request, 'itens.html')
+
+def usuarios(request):
+    return render(request, 'usuarios.html')
+
+def empresa(request):
+    form = RegisterItem()
+    if request.method == 'POST':
+        form = RegisterItem(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('ecommerce:item')
+    else:
+        form = RegisterItem()
+    contex = {'form': form}
+    return render(request, 'item.html', contex)
+
