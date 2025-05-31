@@ -1,12 +1,12 @@
 from django import forms
-from app_ecommerce.models import Itens, Empresa
+from app_ecommerce.models import Itens, Company
 
 
-class EmpresaLogin(forms.ModelForm):
+class CompanyLogin(forms.ModelForm):
     password = forms.CharField(label='Senha', widget=forms.PasswordInput)
 
     class Meta:
-        model = Empresa
+        model = Company
         fields = ['cnpj', 'password']
 
 
@@ -17,7 +17,7 @@ class RegisterItem(forms.ModelForm):
                   'description', 'stock_quantity', 'price']
 
 
-class RegisterEmpresa(forms.ModelForm):
+class RegisterCompany(forms.ModelForm):
     class Meta:
-        model = Empresa
+        model = Company
         fields = ['name', 'cnpj', 'logo', 'password']

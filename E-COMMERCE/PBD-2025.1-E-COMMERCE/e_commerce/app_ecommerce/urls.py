@@ -6,22 +6,10 @@ app_name = 'ecommerce'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('portifolio/', views.portifolio, name='portifolio'),
-    path('starter/', views.starter_page, name='starter'),
-    path('service/', views.service, name='service'),
+    path('sales_dashboard/', views.sales_dashboard, name='sales_dashboard'),
     path('dash/', views.dash, name='dash'),
-    path('user/', views.user, name='user'),
-    path('item/', views.item, name='item'),
-    path('empresas/', views.empresas, name='empresas'),
-    path('itens/', views.itens, name='itens'),
-    path('usuarios/', views.usuarios, name='usuarios'),
-
-
-
-
-
-
-
-
+    path('create_item/', views.create_item, name='Create_item'),
+    path('list_companies/', views.list_companies, name='list_companies'),
+    path('list_itens/', views.list_itens, name='list_itens'),
 
 ]

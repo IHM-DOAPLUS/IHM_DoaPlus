@@ -1,5 +1,5 @@
 from django.db import models
-
+from authentication.models import User
 class Itens(models.Model):
     code_item = models.CharField(max_length=100, primary_key=True, unique=True)
     name = models.CharField(max_length=100)
@@ -31,11 +31,13 @@ class Itens(models.Model):
         )
 
 
-class Empresa(models.Model):
+class Company(models.Model):
     name = models.CharField(max_length=100)
     cnpj = models.CharField(max_length=14, unique=True)
     logo = models.ImageField(upload_to='logos/', null=True, blank=True)
     password = models.CharField(max_length=128)
+    item = models.ForeignKey(Itens, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Nome: {self.name} - CNPJ: {self.cnpj}"

@@ -4,6 +4,7 @@ from django.shortcuts import render
 from .forms import UserLoginForm, UserRegistrationForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+from .models import User
 
 
 def user_page(request):
@@ -38,3 +39,9 @@ def login_page(request):
 def handle_logout(request):
     logout(request)
     return redirect('authentication:login')
+
+
+def list_users(request):
+    users = User.objects.all().order_by('name')
+    contex = {'users': users}
+    return (request, 'list_users.html', contex)
