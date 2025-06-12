@@ -45,6 +45,5 @@ class Item(models.Model):
     def descricao(self):
         return (
             f"Nome: {self.name} - Código: {self.code_item} - "
-            f"Categoria: {self.category} - Descrição: {self.description} - "
-            f"Estoque: {self.stock_quantity}"
+            f"Categoria: {self.category} "
         )

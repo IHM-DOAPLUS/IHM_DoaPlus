@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from .models import _Group, Group, User
-from app_ecommerce.models import Item, Company
+from app_ecommerce.models import Item, Company, Category
 from django.core.exceptions import ValidationError
 
 
@@ -59,3 +59,4 @@ admin.site.unregister(_Group)
 admin.site.register(Group)
 admin.site.register(Item)
 admin.site.register(Company)
+admin.site.register(Category)
