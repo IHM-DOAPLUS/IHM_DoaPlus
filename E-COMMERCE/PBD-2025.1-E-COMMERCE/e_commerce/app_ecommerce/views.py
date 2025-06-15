@@ -19,6 +19,7 @@ def item_dashboard(request):
 
 @login_required
 def dash(request):
+    user = request.user
     return render(request, 'dash.html')
 
 

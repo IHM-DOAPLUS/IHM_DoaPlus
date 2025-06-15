@@ -20,12 +20,14 @@
             <span class="fs-4 fw-bold">Menu</span>
         </div>
         <ul class="nav flex-column">
+            {% if user.is_admin == True %}
             <li class="nav-item">
                 <a class="nav-link" href="/dash/list_companies/" data-url="/dash/list_companies/">
                     <i class="bi bi-building"></i>
                     <span>Empresa</span>
                 </a>
             </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="/dash/list_itens/" data-url="/dash/list_itens/">
                     <i class="bi bi-box-seam"></i>

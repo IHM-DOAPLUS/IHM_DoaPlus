@@ -30,15 +30,16 @@ def user_page(request):
 
 def login_page(request):
     form = UserLoginForm()
+
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
             user = authenticate(request, **form.cleaned_data)
-            if User.is_admin==True and user:
+            if user:
                 login(request, user=user)
-                return redirect('ecommerce:dash')
-            elif user:
-                login(request, user=user)
+                if user.is_admin == True:
+                    return redirect('ecommerce:dash')
+
                 return redirect('ecommerce:index')
     context = {'form': form}
     return render(request, 'login.html', context)
