@@ -1,5 +1,5 @@
 from pyexpat.errors import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterItem, RegisterCompany
 from .models import Company, Item
@@ -53,7 +53,10 @@ def list_companies(request):
 def list_itens(request):
     user = request.user
     company = user.company
-    itens = Item.objects.filter(company_id=user.company)
+    if user.is_admin:
+        itens = Item.objects.all()
+    else:
+        itens = Item.objects.filter(company_id=user.company)
     context = {'itens': itens}
     return render(request, 'list_itens.html', context)
 
@@ -70,3 +73,15 @@ def create_company(request):
         form = RegisterCompany()
     context = {'form': form}
     return render(request, 'create_company.html', context)
+
+
+def company_page(request, id):
+    company = get_object_or_404(Company, id_company=id)
+    itens = Item.objects.filter(company_id=company)
+    companies = Company.objects.filter(logo=company.logo)
+    context = {
+        'company': company,
+        'itens': itens,
+        'companies': companies
+    }
+    return render(request, 'company_page.html', context)

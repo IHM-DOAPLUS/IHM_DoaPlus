@@ -22,7 +22,6 @@
                     <th>Ações</th>
                 </tr>
             </thead>
-            {% if not user.is_admin  %}
             <tbody>
                 {% for item in itens %}
                 <tr>
@@ -43,7 +42,6 @@
                 </tr>
                 {% endfor %}
             </tbody>
-            {% endif %}
         </table>
         {% else %}
         <div class="alert alert-info text-center">Nenhum item cadastrado.</div>

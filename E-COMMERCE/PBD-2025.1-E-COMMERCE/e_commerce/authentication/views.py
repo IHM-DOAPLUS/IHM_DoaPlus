@@ -36,10 +36,7 @@ def login_page(request):
             user = authenticate(request, **form.cleaned_data)
             if user:
                 login(request, user=user)
-                if user.is_admin == True:
-                    return redirect('ecommerce:dash')
-
-                return redirect('ecommerce:index')
+                return redirect('ecommerce:dash')
     context = {'form': form}
     return render(request, 'login.html', context)
 
@@ -53,6 +50,9 @@ def handle_logout(request):
 def list_users(request):
     user = request.user
     company = user.company
-    users = User.objects.filter(company_id=user.company)
+    if user.is_admin:
+        users = User.objects.all()
+    else:
+        users = User.objects.filter(company_id=user.company)
     contex = {'users': users}
     return render(request, 'list_users.html', contex)

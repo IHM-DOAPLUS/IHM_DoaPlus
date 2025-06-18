@@ -12,12 +12,18 @@ urlpatterns = [
 
     path('create_item/', views.create_item, name='create_item'),
     path('list_itens/', views.list_itens, name='list_itens'),
+    path('dash/list_itens/', views.list_itens, name='list_itens'),
+
 
 
     path('create_company/', views.create_company, name='create_company'),
     path('list_companies/', views.list_companies, name='list_companies'),
+    path('dash/list_companies/', views.list_companies, name='list_companies'),
 
-    path('empresa/<int:id>/', views.detalhe_empresa, name='detalhe_empresa'),
+
+    path('empresa/<str:id>/', views.company_page, name='company_page'),
+
+
 
 
 ]

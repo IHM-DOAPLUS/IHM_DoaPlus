@@ -17,26 +17,15 @@
                 <tr>
                     <th>Nome</th>
                     <th>Email</th>
-                    <th>Tipo</th>
                     <th>Ativo</th>
                     <th>Ações</th>
                 </tr>
             </thead>
-            {% if not user.is_admin %}
             <tbody>
                 {% for user in users %}
                 <tr>
-                    <td>{{ user.get_full_name|default:user.email }}</td>
+                    <td>{{ user.first_name }}</td>
                     <td>{{ user.email }}</td>
-                    <td>
-                        {% if user.is_superuser %}
-                        Administrador
-                        {% elif user.is_staff %}
-                        Staff
-                        {% else %}
-                        Usuário
-                        {% endif %}
-                    </td>
                     <td>
                         {% if user.is_active %}
                         <span class="badge bg-success">Sim</span>
@@ -51,7 +40,6 @@
                 </tr>
                 {% endfor %}
             </tbody>
-            {% endif %}
         </table>
         {% else %}
         <div class="alert alert-info text-center">Nenhum usuário cadastrado.</div>

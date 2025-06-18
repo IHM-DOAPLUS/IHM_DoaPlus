@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, Group as _Group, Permission
 
 
-
 class UserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, company, phone, password=None):
         if not email:
@@ -49,7 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    
+
     company = models.ForeignKey(
         'app_ecommerce.Company', on_delete=models.CASCADE, null=True, blank=True)
 
