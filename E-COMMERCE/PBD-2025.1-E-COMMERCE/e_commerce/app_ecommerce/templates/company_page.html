@@ -5,12 +5,12 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Index - Gp Bootstrap Template</title>
+    <title>NoClick</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
     <!-- Favicons -->
-    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'assets/img/icon.png' %}" rel="icon">
     <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
     <!-- Fonts -->
@@ -39,17 +39,22 @@
             <a href="{% url 'ecommerce:index' %}" class="logo d-flex align-items-center me-auto me-lg-0">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="assets/img/logo.png" alt=""> -->
-                <h1 class="sitename">GP</h1>
-                <span>.</span>
+                {% for company in companies %}
+                {% if company.logo %}
+                <img src="{{ company.logo.url }}" alt="" data-aos="fade-in">
+                {% else %}
+                <span class="text-muted">Sem logo</span>
+                {% endif %}
+                {% endfor %}
             </a>
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="{% url 'ecommerce:index' %}" class="active">Home<br></a></li>
+                    <li><a href="#hero" class="active">Home<br></a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#team">Team</a></li>
+                    <li><a href="{% url 'ecommerce:dash' %}">Dashboard</a></li>
                     <li class="dropdown"><a href="#"><span>Dropdown</span> <i
                                 class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
@@ -88,7 +93,7 @@
             {% else %}
             <span class="text-muted">Sem logo</span>
             {% endif %}
-             {% endfor %}
+            {% endfor %}
 
             <div class="container">
 
@@ -155,58 +160,6 @@
 
                             <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
 
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                                    <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-1.jpg' %}"
-                                        class="img-fluid" alt="">
-                                    <div class="portfolio-info">
-                                        <a href="{% url 'ecommerce:item_dashboard' %}">
-                                            <h4>App 1</h4>
-                                            <p>Lorem ipsum, dolor sit</p>
-                                            <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-1.jpg' %}"
-                                                title="App 1" data-gallery="portfolio-gallery-app"
-                                                class="glightbox preview-link">
-                                                <i class="bi bi-zoom-in"></i>
-                                            </a>
-                                            <a href="portfolio-details.html" title="More Details" class="details-link">
-                                                <i class="bi bi-link-45deg"></i>
-                                            </a>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                                    <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-2.jpg' %}"
-                                        class="img-fluid" alt="">
-                                    <div class="portfolio-info">
-                                        <h4>Product 1</h4>
-                                        <p>Lorem ipsum, dolor sit</p>
-                                        <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-2.jpg' %}"
-                                            title="Product 1" data-gallery="portfolio-gallery-product"
-                                            class="glightbox preview-link">
-                                            <i class="bi bi-zoom-in"></i>
-                                        </a>
-                                        <a href="portfolio-details.html" title="More Details" class="details-link">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                                    <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-3.jpg' %}"
-                                        class="img-fluid" alt="">
-                                    <div class="portfolio-info">
-                                        <h4>Branding 1</h4>
-                                        <p>Lorem ipsum, dolor sit</p>
-                                        <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-3.jpg' %}"
-                                            title="Branding 1" data-gallery="portfolio-gallery-branding"
-                                            class="glightbox preview-link">
-                                            <i class="bi bi-zoom-in"></i>
-                                        </a>
-                                        <a href="portfolio-details.html" title="More Details" class="details-link">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </a>
-                                    </div>
-                                </div>
 
                                 {% for item in itens %}
                                 <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
@@ -226,109 +179,6 @@
 
                                 </div>
                                 {% endfor %}
-
-
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                                    <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-4.jpg' %}"
-                                        class="img-fluid" alt="">
-                                    <div class="portfolio-info">
-                                        <h4>App 2</h4>
-                                        <p>Lorem ipsum, dolor sit</p>
-                                        <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-4.jpg' %}"
-                                            title="App 2" data-gallery="portfolio-gallery-app"
-                                            class="glightbox preview-link">
-                                            <i class="bi bi-zoom-in"></i>
-                                        </a>
-                                        <a href="portfolio-details.html" title="More Details" class="details-link">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                                    <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-5.jpg' %}"
-                                        class="img-fluid" alt="">
-                                    <div class="portfolio-info">
-                                        <h4>Product 2</h4>
-                                        <p>Lorem ipsum, dolor sit</p>
-                                        <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-5.jpg' %}"
-                                            title="Product 2" data-gallery="portfolio-gallery-product"
-                                            class="glightbox preview-link">
-                                            <i class="bi bi-zoom-in"></i>
-                                        </a>
-                                        <a href="portfolio-details.html" title="More Details" class="details-link">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                                    <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-6.jpg' %}"
-                                        class="img-fluid" alt="">
-                                    <div class="portfolio-info">
-                                        <h4>Branding 2</h4>
-                                        <p>Lorem ipsum, dolor sit</p>
-                                        <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-6.jpg' %}"
-                                            title="Branding 2" data-gallery="portfolio-gallery-branding"
-                                            class="glightbox preview-link">
-                                            <i class="bi bi-zoom-in"></i>
-                                        </a>
-                                        <a href="portfolio-details.html" title="More Details" class="details-link">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                                    <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-7.jpg' %}"
-                                        class="img-fluid" alt="">
-                                    <div class="portfolio-info">
-                                        <h4>App 3</h4>
-                                        <p>Lorem ipsum, dolor sit</p>
-                                        <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-7.jpg' %}"
-                                            title="App 3" data-gallery="portfolio-gallery-app"
-                                            class="glightbox preview-link">
-                                            <i class="bi bi-zoom-in"></i>
-                                        </a>
-                                        <a href="portfolio-details.html" title="More Details" class="details-link">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                                    <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-8.jpg' %}"
-                                        class="img-fluid" alt="">
-                                    <div class="portfolio-info">
-                                        <h4>Product 3</h4>
-                                        <p>Lorem ipsum, dolor sit</p>
-                                        <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-8.jpg' %}"
-                                            title="Product 3" data-gallery="portfolio-gallery-product"
-                                            class="glightbox preview-link">
-                                            <i class="bi bi-zoom-in"></i>
-                                        </a>
-                                        <a href="portfolio-details.html" title="More Details" class="details-link">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </a>
-                                    </div>
-                                </div><!-- End Portfolio Item -->
-
-                                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                                    <img src="{% static 'assets/img/masonry-portfolio/masonry-portfolio-9.jpg' %}"
-                                        class="img-fluid" alt="">
-                                    <div class="portfolio-info">
-                                        <h4>Branding 3</h4>
-                                        <p>Lorem ipsum, dolor sit</p>
-                                        <a href="{% static 'assets/img/masonry-portfolio/masonry-portfolio-9.jpg' %}"
-                                            title="Branding 3" data-gallery="portfolio-gallery-branding"
-                                            class="glightbox preview-link">
-                                            <i class="bi bi-zoom-in"></i>
-                                        </a>
-                                        <a href="portfolio-details.html" title="More Details" class="details-link">
-                                            <i class="bi bi-link-45deg"></i>
-                                        </a>
-                                    </div>
-                                </div><!-- End Portfolio Item -->
 
                             </div><!-- End Portfolio Container -->
 
