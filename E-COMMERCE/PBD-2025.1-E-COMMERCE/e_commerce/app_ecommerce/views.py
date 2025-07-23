@@ -16,11 +16,6 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def item_dashboard(request):
-    itens = Item.objects.all().order_by('name')
-    context = {'itens': itens}
-    return render(request, 'item_dashboard.html', context)
-
 
 @login_required
 def dash(request):
@@ -85,3 +80,9 @@ def company_page(request, id):
         'companies': companies
     }
     return render(request, 'company_page.html', context)
+
+def item_dashboard(request, id):
+    itens = get_object_or_404(Item, code_item=id)
+    itens = Item.objects.filter(code_item=id)
+    context = {'itens': itens}
+    return render(request, 'item_dashboard.html', context)
