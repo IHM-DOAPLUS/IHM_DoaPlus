@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, company, phone, password=None):
+    def create_user(self, email, first_name, last_name, phone, password=None):
         if not email:
             raise ValueError("Users must have an email address")
 
@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
             phone=phone,
-            company=company
+           
 
         )
 
@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         'app_ecommerce.Company', on_delete=models.CASCADE, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone', 'company']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone']
 
     objects = UserManager()
 

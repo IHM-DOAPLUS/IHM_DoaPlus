@@ -2,10 +2,11 @@
 {% load static %}
 {% block content %}
 {% include 'includes/header.html' %}
-
+{% include 'includes/hero.html' %}
 
 <body class="portfolio-details-page">
   <main class="main">
+
 
     <!-- Page Title -->
     <div class="page-title" data-aos="fade">
@@ -20,63 +21,75 @@
     </div>
 
     <section id="portfolio-details" class="portfolio-details section">
-
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-
         <div class="row gy-4">
 
-          <div class="col-lg-8">
-            <div class="portfolio-details-slider swiper init-swiper">
+          <!-- Miniaturas à esquerda -->
+          <div class="col-lg-2 d-flex flex-column gap-2">
+            {% if item.image %}
+            <a href="{{ item.image.url }}" data-lightbox="product-gallery">
+              <img src="{{ item.image.url }}" class="img-fluid border" alt="Miniatura principal">
+            </a>
+            {% endif %}
 
-              <script type="application/json" class="swiper-config">
-                {
-                  "loop": true,
-                  "speed": 600,
-                  "autoplay": {
-                    "delay": 5000
-                  },
-                  "slidesPerView": "auto",
-                  "pagination": {
-                    "el": ".swiper-pagination",
-                    "type": "bullets",
-                    "clickable": true
-                  }
-                }
-              </script>
-              {% for item in itens %}
-              <div class="swiper-wrapper align-items-center">
-
-                <div class="swiper-slide">
-                  <img src="{{ item.image.url }}" alt="">
-                </div>
-              </div>
-              <div class="swiper-pagination"></div>
-            </div>
-          </div>
-
-          <div class="col-lg-4">
-            <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
-              <h3>{{item.name}}</h3>
-              <ul>
-                <li><strong>Preco</strong>: R${{item.price}}</li>
-                <li><strong>Em estoque</strong>: {{item.stock_quantity}}</li>
-                <li><strong>Em construcao</strong>: ...</li>
-              </ul>
-            </div>
-            <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
-              <h2>Descricao</h2>
-              <p>
-                {{item.description}}
-              </p>
-            </div>
+            {% for img in galery %}
+            <a href="{{ img.image.url }}" data-lightbox="product-gallery">
+              <img src="{{ img.image.url }}" class="img-fluid border" alt="Miniatura extra">
+            </a>
             {% endfor %}
           </div>
 
+          <!-- Imagem principal com zoom -->
+          <div class="col-lg-6">
+            {% if item.image %}
+            <a href="{{ item.image.url }}" data-lightbox="product-gallery">
+              <img src="{{ item.image.url }}" class="img-fluid border rounded" alt="Imagem principal">
+            </a>
+            {% endif %}
+          </div>
+
+          <!-- Infos do item -->
+          <div class="col-lg-4">
+            <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
+              <h3>{{ item.name }}</h3>
+              <div class="dropdown">
+
+                <a href="#" class="" data-bs-toggle="dropdown" aria-expanded="false">
+
+                  <span
+                    class="badge align-items-center p-1 pe-2 text-dark-emphasis bg-light-subtle border border-dark-subtle rounded-pill">
+                    <img class="rounded-circle me-1" width="30" height="30" src="{{ item.image.url }}" alt="">{% for d
+                    in details %}
+                    {{d.color}}</span>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu">
+                  <li><a class="dropdown-item" href="#"></a></li>
+                  <ul>
+                    <li>
+
+
+                      - {{ d.size }} - {{ d.storage }}
+
+
+
+                    </li>
+                  </ul>
+                  {% endfor %}
+              </div>
+            </div>
+
+            <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
+              <h2>Descrição</h2>
+              <p>{{ item.description }}</p>
+            </div>
+          </div>
+
         </div>
-
       </div>
+    </section>
 
-    </section><!-- /Portfolio Details Section -->
+    <!-- /Portfolio Details Section -->
 
   </main>
 
@@ -146,7 +159,7 @@
       class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
- 
+
 
 </body>
 

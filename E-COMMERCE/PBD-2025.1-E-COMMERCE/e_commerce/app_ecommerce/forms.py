@@ -20,4 +20,4 @@ class RegisterItem(forms.ModelForm):
 class RegisterCompany(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ['name', 'cnpj', 'logo', 'categorys']
+        fields = ['name', 'cnpj', 'logo', 'category']

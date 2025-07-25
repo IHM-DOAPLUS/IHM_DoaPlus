@@ -30,7 +30,7 @@
                                 <div class="portfolio-content h-100 shadow-sm">
 
 
-                                    <a href="{% url 'ecommerce:item_dashboard' %}">
+                                    <a href="{% url 'ecommerce:item_dashboard' item.code_item %}">
                                         {% if item.image %}
                                         <img src="{{ item.image.url }}" class="img-fluid" alt="">
                                         {% else %}

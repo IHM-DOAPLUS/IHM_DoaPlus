@@ -2,7 +2,7 @@ from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterItem, RegisterCompany
-from .models import Company, Item
+from .models import Company, Item, ItemDetails, Image
 
 
 def index(request):
@@ -14,7 +14,6 @@ def index(request):
     }
 
     return render(request, 'index.html', context)
-
 
 
 @login_required
@@ -81,8 +80,15 @@ def company_page(request, id):
     }
     return render(request, 'company_page.html', context)
 
+
 def item_dashboard(request, id):
-    itens = get_object_or_404(Item, code_item=id)
-    itens = Item.objects.filter(code_item=id)
-    context = {'itens': itens}
+    item = get_object_or_404(Item, code_item=id)
+    details = ItemDetails.objects.filter(item=item)
+    galery = Image.objects.filter(item=item)
+
+    context = {
+        'item': item,
+        'galery': galery,
+        'details': details,
+    }
     return render(request, 'item_dashboard.html', context)

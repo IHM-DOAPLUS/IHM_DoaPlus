@@ -57,6 +57,4 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.unregister(_Group)
 admin.site.register(Group)
-admin.site.register(Item)
-admin.site.register(Company)
-admin.site.register(Category)
+
