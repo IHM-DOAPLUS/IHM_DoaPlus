@@ -11,20 +11,23 @@
     <!-- Page Title -->
     <div class="page-title" data-aos="fade">
       <nav class="breadcrumbs">
+        {% if item.name %}
         <div class="container">
           <ol>
-            <li><a href="{% url 'ecommerce:index' %}">Home</a></li>
-            <li class="current">Portfolio Details</li>
+            <li><a href="{% url 'ecommerce:index' %}">Inicio</a></li>
+            <li><a href="#">{{item.category}}</a></li>
+            <li class="current">{{item.name}}</li>
           </ol>
         </div>
+        {% endif %}
       </nav>
     </div>
 
     <section id="portfolio-details" class="portfolio-details section">
-      
+
       <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row gy-4">
-    
+
           <div class="col-lg-2 d-flex flex-column gap-2">
             {% if item.image %}
             <a href="{{ item.image.url }}" data-lightbox="product-gallery">
@@ -160,7 +163,7 @@
 
   <!-- Preloader -->
 
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

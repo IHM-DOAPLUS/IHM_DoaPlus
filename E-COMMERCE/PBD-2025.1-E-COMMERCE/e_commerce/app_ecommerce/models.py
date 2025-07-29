@@ -6,7 +6,7 @@ class Category(models.Model):
     description = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Categoria:  {self.description} "
+        return f"{self.description} "
     
 class Color(models.Model):
     color = models.CharField(max_length=100)

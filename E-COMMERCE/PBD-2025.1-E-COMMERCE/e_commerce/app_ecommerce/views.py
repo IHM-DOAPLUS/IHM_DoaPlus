@@ -37,10 +37,10 @@ def create_item(request):
 
 
 @login_required
-def list_companies(request):
+def companies(request):
     companies = Company.objects.all()
     context = {'companies': companies}
-    return render(request, 'list_companies.html', context)
+    return render(request, 'companies.html', context)
 
 
 @login_required
