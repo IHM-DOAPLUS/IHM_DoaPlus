@@ -43,7 +43,7 @@ def login_page(request):
 
 def handle_logout(request):
     logout(request)
-    return redirect('authentication:login')
+    return redirect('ecommerce:index')
 
 
 @login_required

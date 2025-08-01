@@ -1,0 +1,71 @@
+{% load static %}
+<footer id="footer" class="footer dark-background">
+
+    <div class="footer-top">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-6 footer-about">
+                    <a href="{% url 'ecommerce:index' %}" class="logo d-flex align-items-center">
+                        <span class="sitename">InstaShop</span>
+                    </a>
+                    <div class="footer-contact pt-3">
+                        <p>Ramon Frazao</p>
+                        <p>Princesa Isabel, PB</p>
+                        <p class="mt-3"><strong>Phone:</strong> <span>(83) 99891-9936</span></p>
+                        <p><strong>Email:</strong> <span>ramonalves1994@gmail.com</span></p>
+                    </div>
+                    <div class="social-links d-flex mt-4">
+                        <a href="https://www.instagram.com/ramonfraza0?igsh=MXE3ZTA0ODdtOTByag%3D%3D&utm_source=qr"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/jose-ramon-82314a269"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-3 footer-links">
+                    <h4>Links Uteis</h4>
+                    <ul>
+                        <li><i class="bi bi-chevron-right"></i> <a href="{% url 'ecommerce:index' %}"> Inicio</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="{% url 'ecommerce:companies' %}"> Lojas</a></li>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-3 footer-links">
+                    <h4>Usuario</h4>
+                    <ul>
+                        <li><i class="bi bi-chevron-right"></i> <a href="{% url 'authentication:login' %}"> Entrar</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a href="#"> Cadastrar</a></li>
+
+                        
+                    </ul>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright">
+        <div class="container text-center">
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">GP</strong> <span>Todos os direitos
+                    reservados</span>
+            </p>
+            <div class="credits">
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
+                    href="https://themewagon.com">ThemeWagon</a>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- Botão de login no canto inferior direito do rodapé -->
+    <a href="{% url 'authentication:login' %}" class="btn btn-primary btn-lg" style="
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        z-index: 10;
+      ">
+        Efetuar Login
+    </a>
+    </div>
+
+</footer>

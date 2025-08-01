@@ -6,7 +6,8 @@ from .models import Company, Item, ItemDetails, Image, Category, User
 
 
 def index(request):
-    query = request.GET.get('q')  
+    query = request.GET.get('q')
+    user = request.user
 
     if query:
         itens = Item.objects.filter(name__icontains=query)
@@ -26,7 +27,7 @@ def index(request):
 @login_required
 def dash(request):
     user = request.user
-   
+
     return render(request, 'dash.html')
 
 
@@ -42,6 +43,7 @@ def create_item(request):
         form = RegisterItem()
     context = {'form': form}
     return render(request, 'create_item.html', context)
+
 
 @login_required
 def list_companies(request):
@@ -89,6 +91,7 @@ def company_page(request, id):
 
 
 def item_dashboard(request, id):
+    user = request.user
     item = get_object_or_404(Item, code_item=id)
     details = ItemDetails.objects.filter(item=item)
     galery = Image.objects.filter(item=item)
@@ -118,4 +121,3 @@ def companies(request):
     companies = Company.objects.all()
     context = {'companies': companies}
     return render(request, 'companies.html', context)
-
