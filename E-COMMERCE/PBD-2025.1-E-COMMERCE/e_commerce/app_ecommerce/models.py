@@ -41,6 +41,7 @@ class Item(models.Model):
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
     image = models.ImageField(
         upload_to='itens_images/', null=True, blank=True)
+    description = models.CharField(max_length=100)
 
     def __str__(self):
         return f"Nome = {self.name}"

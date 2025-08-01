@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 
+
 <header id="header" class="header d-flex align-items-center position-relative" style="background-color: #000;">
   <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
     <a href="{% if company %}{% url 'ecommerce:company_page' company.id_company %}{% else %}{% url 'ecommerce:index' %}{% endif %}"
@@ -93,10 +94,8 @@
         <div class="container">
           <div class="row d-flex justify-content-center text-center">
             <div class="col-lg-8">
-              <h1>Portfolio Details</h1>
-              <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas
-                consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit
-                quaerat ipsum dolorem.</p>
+              <h1>{{item.name}}</h1>
+              <p class="mb-0">{{item.description}}</p>
             </div>
           </div>
         </div>
@@ -175,7 +174,7 @@
           <!-- Infos do item -->
           <div class="col-lg-4">
             <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
-              <h3>{{ item.name }}</h3>
+              <h3>Estoque disponivel</h3>
               <div class="d-flex gap-3">
                 <!-- Cor -->
                 <div class="dropdown">
@@ -183,6 +182,7 @@
                     aria-expanded="false">
                     Disponiveis
                   </button>
+                  
 
                   <ul class="dropdown-menu "
                     style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 40px, 0px);"
