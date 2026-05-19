@@ -1,11 +1,36 @@
 from pyexpat.errors import messages
+from decimal import Decimal
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterItem, RegisterCompany
-from .models import Company, Item, ItemDetails, Image, Category, User
+from .models import Company, Item, ItemDetails, Image, Category, User, Ongs, Causa
 
 
 def index(request):
+    causas = Causa.objects.all().order_by('title')
+    causa = get_object_or_404(Causa)
+    query = request.GET.get('q')
+    user = request.user
+
+    if query:
+        causas = Causa.objects.filter(name__icontains=query)
+        if not causas.exists():
+            causas = Causa.objects.all().order_by('title')
+
+    companies = Company.objects.all()
+    porcentagem = min((causa.valor_arrecadado / causa.value) * 100, 100)
+
+    context = {
+
+        'causas': causas,
+        'companies': companies,
+        'porcentagem': porcentagem
+    }
+
+    return render(request, 'index.html', context)
+
+
+'''def index(request):
     itens = Item.objects.all().order_by('name')
     query = request.GET.get('q')
     user = request.user
@@ -14,7 +39,7 @@ def index(request):
         itens = Item.objects.filter(name__icontains=query)
         if not itens.exists():
             itens = Item.objects.all().order_by('name')
-
+            
     companies = Company.objects.all()
 
     context = {
@@ -22,7 +47,7 @@ def index(request):
         'companies': companies,
     }
 
-    return render(request, 'index.html', context)
+    return render(request, 'index.html', context)'''
 
 
 @login_required
@@ -98,8 +123,36 @@ def company_page(request, id):
     return render(request, 'company_page.html', context)
 
 
-def item_dashboard(request):
-    '''user = request.user
+def item_dashboard(request, title):
+    user = request.user
+    query = request.GET.get('q')
+    causa = get_object_or_404(Causa, title=title)
+
+    if query:
+        causas = Causa.objects.filter(name__icontains=query)
+        if causas.count() >= 2:
+            context = {'causas': causas}
+            return render(request, 'index.html', context)
+        elif causas.count() == 1:
+            causa = causas.first()
+
+    if request.method == "POST":
+        valor = float(request.POST.get("valor"))
+        causa.valor_arrecadado += Decimal(str(valor))
+        causa.save()
+        return redirect('ecommerce:item_dashboard', title=causa.title)
+
+    porcentagem = min((causa.valor_arrecadado / causa.value) * 100, 100)
+    context = {
+        'causa': causa,
+        'porcentagem': porcentagem
+    }
+
+    return render(request, 'item_dashboard.html', context)
+
+
+'''def item_dashboard(request):
+    user = request.user
     query = request.GET.get('q')
     item = get_object_or_404(Item, code_item=id)
     details = ItemDetails.objects.filter(item=item)
@@ -119,8 +172,8 @@ def item_dashboard(request):
         'item': item,
         'galery': galery,
         'details': details,
-    }'''
-    return render(request, 'item_dashboard.html')
+    }
+    return render(request, 'item_dashboard.html')'''
 
 
 def category_page(request, category):

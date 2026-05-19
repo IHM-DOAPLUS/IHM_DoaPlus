@@ -9,12 +9,13 @@ class ItemDetailsInlinte(admin.TabularInline):
 class ImageInline(admin.TabularInline):
     model = Image
 
-class CausaAdmin(admin.ModelAdmin):
+class ItemAdmin(admin.ModelAdmin):
     inlines = [
-        ImageInline
+        ImageInline,
+        ItemDetailsInlinte
     ]
-    
-admin.site.register(Causa, CausaAdmin)
+admin.site.register(Causa)
+admin.site.register(Item, ItemAdmin)
 admin.site.register(Company)
 admin.site.register(Category)
 admin.site.register(Color)

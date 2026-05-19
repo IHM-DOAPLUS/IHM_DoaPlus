@@ -25,7 +25,7 @@ class RegisterCompany(forms.ModelForm):
 class RegisterCausa(forms.ModelForm):
     class Meta:
         model = Causa
-        fields = ['title', 'description', 'value', 'creator', 'ong', 'image']
+        fields = ['title', 'description', 'value', 'creator', 'ong', 'image', 'valor_arrecadado']
 
 class RegisterOng(forms.ModelForm):
     class Meta:

@@ -98,7 +98,7 @@
           
           </script>
 
-      <h2 class="fw-bold mb-2">Lojas parceiras</h2>
+      <h2 class="fw-bold mb-2">LOJAS PARCEIRAS</h2>
       <div class="swiper-wrapper align-items-center">
         {% for company in companies %}
         <div class="swiper-slide">
@@ -133,18 +133,30 @@
     <div class="row gy-4">
 
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        {% for causa in causas %}
         <div class="service-item  position-relative">
-          (imgem)
-          <h3>(Titulo da causa)</h3>
-          <p>(detalhes da causa)</p>
-          <div class="progress">
-            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style="width: 50%">
-              50%
-            </div>
+          {% if causa.image %}
+          <div>
+            <img src="{{ causa.image.url }}" class="img-thumbnail" alt="...">
           </div>
-          <a href="#" class="readmore stretched-link">Saber mais <i
-              class="bi bi-arrow-right"></i></a>
+          {% else %}
+          <span class="text-muted">Sem Imagem</span>
+          {% endif %}
+          <div>
+            <h3>{{ causa.title }}</h3>
+            <p>{{ causa.description|truncatechars:50 }}</p>
+          </div>
+          <div class="progress" role="progressbar" aria-label="Warning striped example" aria-valuenow="75"
+            aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar progress-bar-striped bg-warning"
+              style="width: {{ porcentagem|floatformat:0 }}%; min-width: 2em;">
+              {{ porcentagem|floatformat:0 }}%
+            </div>
+
+          </div>
+          <a href="#" class="readmore stretched-link">Saber mais <i class="bi bi-arrow-right"></i></a>
         </div>
+        {% endfor %}
       </div><!-- End Service Item -->
 
       <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">

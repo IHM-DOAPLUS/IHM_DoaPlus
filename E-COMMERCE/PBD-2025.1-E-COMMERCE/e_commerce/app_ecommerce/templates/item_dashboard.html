@@ -104,7 +104,7 @@
           <div class="swiper-wrapper align-items-center">
 
             <div class="swiper-slide">
-              <img src="{% static 'assets/img/portfolio/app-1.jpg' %}" alt="">
+              <img src="{{ causa.image.url }}" alt="">
             </div>
 
           </div>
@@ -115,20 +115,54 @@
       <div class="col-lg-4">
         <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
           <h3>Progresso
-            <div class="progress">
-              <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style="width: 50%">
-                50%
+            <div class="progress" role="progressbar" aria-label="Warning striped example" aria-valuenow="75"
+              aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar progress-bar-striped bg-warning"
+                style="width: {{ porcentagem|floatformat:0 }}%; min-width: 2em;">
+                {{ porcentagem|floatformat:0 }}%
               </div>
+
+            </div>
           </h3>
           <ul>
-            <li><strong>(Quantidade arrecadado)</strong></li>
-            <li><strong>(de tanto...)</strong></li>
+            <li><strong>Quantidade arrecadado: R$: {{ causa.valor_arrecadado }}</strong></li>
+            <li><strong>De: R$: {{ causa.value }}</strong></li>
           </ul>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Ajudar
+          </button>
+
+          <!-- Modal -->
+          <form method="POST">
+            {% csrf_token %}
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Contribua com a causa</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="input-group mb-3">
+                      <span class="input-group-text">R$</span>
+                      <input type="number" class="form-control" name="valor">
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sair</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
         <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
-          <h2>(Titulo da causa)</h2>
+          <h2>{{ causa.title }}</h2>
           <p>
-            (descrição da causa)
+            {{ causa.description }}
           </p>
         </div>
       </div>

@@ -21,10 +21,8 @@ urlpatterns = [
     path('companiespage/', views.companies, name='companies'),
 
    
-
-
     path('empresa/<str:id>/', views.company_page, name='company_page'),
-    path('causa/', views.item_dashboard, name='item_dashboard'),
+    path('causa/<str:title>', views.item_dashboard, name='item_dashboard'),
     path('item/categoria/<int:category>/',
          views.category_page, name='category_page'),
    

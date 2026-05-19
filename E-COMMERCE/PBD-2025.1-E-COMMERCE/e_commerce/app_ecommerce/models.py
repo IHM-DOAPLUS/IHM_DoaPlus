@@ -66,23 +66,40 @@ class ItemDetails(models.Model):
     def __str__(self):
         return f" {self.color} - {self.size} - {self.storage}"
 
+
 class Ongs(models.Model):
     name = models.CharField(max_length=100)
+
 
 class Causa(models.Model):
     title = models.CharField(max_length=20)
     description = models.CharField(max_length=100, null=False, blank=False)
-    value = models.FloatField(null=False, blank=False)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    ong = models.ForeignKey(Ongs, on_delete=models.CASCADE, blank=True, null=True)
+    value = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    valor_arrecadado = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    creator = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True)
+    ong = models.ForeignKey(
+        Ongs, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(
-        upload_to='itens_images/', null=False, blank=False)
+        upload_to='itens_images/', null=True, blank=True)
 
 
 class Image(models.Model):
+    item = models.ForeignKey(
+        Item,
+        on_delete=models.CASCADE,
+        related_name='image_item',
+        null=True,
+        blank=True
+    )
+
     causa = models.ForeignKey(
-        Causa, on_delete=models.CASCADE, related_name='imagem_causa')
+        Causa,
+        on_delete=models.CASCADE,
+        related_name='imagem_causa',
+        null=True,
+        blank=True
+    )
+
     image = models.ImageField(upload_to='itens_images/')
 
-    def __str__(self):
-        return f"Imagem de {self.item.name}"
