@@ -25,7 +25,8 @@ urlpatterns = [
     path('causa/<str:title>', views.item_dashboard, name='item_dashboard'),
     path('item/categoria/<int:category>/',
          views.category_page, name='category_page'),
-   
+
+    path('meuscupons/', views.meus_cupons, name='meus_cupons')
 
 
 

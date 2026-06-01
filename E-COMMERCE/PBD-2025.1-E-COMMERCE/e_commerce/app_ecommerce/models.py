@@ -75,8 +75,10 @@ class Causa(models.Model):
     title = models.CharField(max_length=20)
     description = models.CharField(max_length=100, null=False, blank=False)
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    valor_arrecadado = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    porcentagem = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    valor_arrecadado = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.00)
+    porcentagem = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.00)
     ativo = models.BooleanField(default=True)
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE, blank=True, null=True)
@@ -84,6 +86,31 @@ class Causa(models.Model):
         Ongs, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(
         upload_to='itens_images/', null=True, blank=True)
+
+
+class Cupom(models.Model):
+
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True)
+
+    codigo = models.CharField(max_length=20, unique=True)
+
+    desconto = models.DecimalField(max_digits=5, decimal_places=2)
+
+    tipo_desconto = models.CharField(
+        max_length=4,
+        choices=[
+            ('PERC', 'Porcentagem'),
+            ('FIXO', 'Valor Fixo')
+        ]
+    )
+
+    validade = models.DateTimeField()
+    usado = models.BooleanField(default=False)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.codigo
 
 
 class Image(models.Model):
@@ -104,4 +131,3 @@ class Image(models.Model):
     )
 
     image = models.ImageField(upload_to='itens_images/')
-

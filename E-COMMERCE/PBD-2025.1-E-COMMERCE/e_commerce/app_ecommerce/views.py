@@ -183,6 +183,7 @@ def item_dashboard(request, title):
 def category_page(request, category):
     categoria = get_object_or_404(Category, id=category)
     item = Item.objects.filter(category=categoria)
+    ongs = Ongs.objects.all().order_by('name')
     companies = Company.objects.all()
     query = request.GET.get('q')
     if query:
@@ -193,7 +194,8 @@ def category_page(request, category):
     context = {
         'item': item,
         'companies': companies,
-        'categoria': categoria
+        'categoria': categoria,
+        'ong': ongs
     }
 
     return render(request, 'category_page.html', context)
@@ -212,3 +214,6 @@ def companies(request):
 
 def home(request):
     return render(request, "home.html")
+
+def meus_cupons(request):
+    return render(request, 'list_cupons.html')

@@ -1,7 +1,10 @@
+{% extends 'base.html' %}
 {% load static %}
-<header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+{% block content %}
 
+<header id="header" class="header d-flex align-items-center position-relative" style="background-color: #000;">
+
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
         <a href="{% if company %}{% url 'ecommerce:company_page' company.id_company %}{% else %}{% url 'ecommerce:index' %}{% endif %}"
             class="logo d-flex align-items-center">
 
@@ -16,15 +19,15 @@
         <nav id="navmenu" class="navmenu">
             <ul>
                 <li><a href="{% url 'ecommerce:index' %}" class="active">Inicio<br></a></li>
-                <li><a href="{% url 'ecommerce:companies' %}">Lojas parceiras</a></li>
+                <li><a href="{% url 'ecommerce:companies' %}">Lojas</a></li>
                 <li class="dropdown">
                     <a href="#">
-                        <span>Ajudar</span>
+                        <span>Como ajudar</span>
                         <i class="bi bi-chevron-down toggle-dropdown"> </i>
                     </a>
                     <ul>
-                        <li><a href="{% url 'ecommerce:category_page' 1 %}">Causas</a></li>
-                        <li><a href="{% url 'ecommerce:category_page' 2 %}">ONGs</a></li>
+                        <li><a href="{% url 'ecommerce:category_page' 4 %}">Causas</a></li>
+                        <li><a href="{% url 'ecommerce:category_page' 3 %}">ONGs</a></li>
 
                     </ul>
                 </li>
@@ -69,8 +72,6 @@
                     </li>
                     <li><a class="dropdown-item" href="{% url 'authentication:logout' %}">Sair</a></li>
                     {% endif %}
-
-
                 </ul>
 
             </div>
@@ -80,4 +81,39 @@
 
     </div>
 
+    </div>
 </header>
+
+<section id="services" class="services section">
+    <div class="container px-4 py-5" id="custom-cards">
+        <h2 class="pb-2 border-bottom">
+            <font dir="auto" style="vertical-align: inherit;">
+                <font dir="auto" style="vertical-align: inherit;">Confira os seus cupons disponíveis</font>
+            </font>
+        </h2>
+        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+            <div class="col">
+                <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                    style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('{% static 'assets/img/CUPOM.jpg' %}'); background-size: cover; background-position: center;">
+                    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                        <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold text-white"
+                            style="-webkit-text-stroke: 2px rgb(0, 0, 0);">
+                            <font dir="auto" style="vertical-align: inherit;">
+                                <font dir="auto" style="vertical-align: inherit;">CADE O TEXTO</font>
+                            </font>
+                        </h3>
+                        <div class="text-center mt-4">
+                            <a href="{% url 'ecommerce:companies' %}"
+                                class="btn btn-light px-4 py-2 rounded-pill fw-bold text-decoration-none">
+                                Utilizar cupom
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% include 'includes/footer.html' %}
+{% endblock %}
