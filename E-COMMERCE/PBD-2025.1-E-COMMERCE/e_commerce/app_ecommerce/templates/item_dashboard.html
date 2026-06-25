@@ -1,0 +1,378 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% include 'includes/new_header.html' %}
+
+{% if messages %}
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1055; margin-top: 90px;">
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show shadow-lg border-0"
+        role="alert" style="min-width: 300px; background-color: #d1ecf1; color: #0c5460;">
+        <div class="d-flex align-items-center gap-2">
+            <span>{{ message }}</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<section id="portfolio-details" class="portfolio-details section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'ecommerce:index' %}">Inicio</a></li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'ecommerce:company_page' id=item.company_id.id_company %}">
+                        {{ item.company_id.name }}
+                    </a>
+                </li>
+                <li class=" breadcrumb-item active" aria-current="page">{{item.name}}</li>
+            </ol>
+        </nav>
+        <div class="row gy-4">
+
+            <div class="col-lg-8">
+                <div class="portfolio-details-slider swiper init-swiper">
+
+                    <script type="application/json" class="swiper-config">
+                    {
+                        "loop": true,
+                        "speed": 600,
+                        "autoplay": {
+                            "delay": 5000
+                        },
+                        "slidesPerView": "auto",
+                        "pagination": {
+                            "el": ".swiper-pagination",
+                            "type": "bullets",
+                            "clickable": true
+                        }
+                    }
+                    </script>
+
+                    <div class="swiper-wrapper align-items-center">
+                        {% for foto in galery %}
+                        <div class="swiper-slide conteneiner-padronizado">
+                            <img src="{{ foto.image.url }}" alt="{{ item.name }}" class="img-padronizada">
+                        </div>
+                        {% empty %}
+                        <div class="swiper-slide conteneiner-padronizado">
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="img-padronizada">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="portfolio-info" data-aos="fade-up" data-aos-delay="200">
+                    <h3>{{ item.name }}</h3>
+
+                    <div class="preco-container">
+                        <span class="preco-cifrao">R$</span>
+                        <span class="preco-valor">{{ item.price|floatformat:2 }}</span>
+                    </div>
+
+                    <ul>
+                        <li><strong>Categoria</strong>: {{ item.category }}</li>
+                        <li><strong>Loja</strong>: {{ item.company_id.name }}</li>
+                    </ul>
+
+                    <form action="#" method="POST" class="compra-form" id="formCompraPrincipal">
+                        {% csrf_token %}
+
+                        {% if details %}
+                        <div class="form-group mb-4">
+                            <label class="form-label"><strong>Opções disponíveis:</strong></label>
+
+                            <div class="variacoes-grid">
+                                {% for d in details %}
+                                <input type="radio" name="variacao_id" id="var-{{ d.id }}" value="{{ d.id }}" required
+                                    {{ forloop.first|yesno:"checked," }}>
+
+                                <label for="var-{{ d.id }}" class="variacao-card">
+                                    <span>Cor: {{ d.color }}</span>
+                                    {% if d.size %}<span> | Tam: {{ d.size }}</span>{% endif %}
+                                    {% if d.storage %}<span> | Armaz: {{ d.storage }}</span>{% endif %}
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <input type="hidden" name="cupom_id" id="cupomIdEnvio" value="0">
+
+                        <button type="button" class="btn-compra-agora text-center text-decoration-none"
+                            data-bs-toggle="modal" data-bs-target="#modalSimulacaoCompra">
+                            Comprar Agora
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-12">
+                <div class="portfolio-description" data-aos="fade-up" data-aos-delay="300">
+                    <h2>Descrição</h2>
+                    <p style="white-space: pre-line;">{{ item.description }}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<div class="modal fade" id="modalSimulacaoCompra" tabindex="-1" aria-labelledby="modalSimulacaoLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold" id="modalSimulacaoLabel">Review do seu Pedido</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body px-4">
+                <div class="text-center my-3 p-3 bg-light rounded">
+                    <p class="text-muted mb-1 fs-7">Valor Original</p>
+                    <h4 id="valorOriginalTela" class="fw-bold text-dark mb-0 h3">R$ {{ item.price|floatformat:2 }}</h4>
+
+                    <div id="containerPrecoDesconto" class="mt-2 d-none">
+                        <p class="text-success mb-1 fs-7 fw-bold">Novo Valor com Desconto</p>
+                        <h2 id="valorFinalTela" class="fw-bold text-success mb-0">R$ 0,00</h2>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-dark fs-7">Selecione um Cupom de Desconto:</label>
+                    <div class="d-flex flex-column gap-2" id="listaCuponsModal">
+
+                        <div class="form-check p-2 border rounded cursor-pointer option-cupom">
+                            <input class="form-check-input ms-1" type="radio" name="cupom_select" id="sem-cupom"
+                                value="0" data-tipo="NENHUM" data-codigo="" checked>
+                            <label class="form-check-label ms-2 fw-semibold text-secondary" for="sem-cupom">
+                                Sem cupom de desconto
+                            </label>
+                        </div>
+
+                        {% for cupom in cupons %}
+                        <div class="form-check p-2 border rounded cursor-pointer option-cupom">
+                            <input class="form-check-input ms-1 radio-cupom" type="radio" name="cupom_select"
+                                id="cupom-{{ cupom.id }}" value="{{ cupom.id }}" data-desconto="{{ cupom.desconto }}"
+                                data-tipo="{{ cupom.tipo_desconto }}" data-codigo="{{ cupom.codigo }}">
+                            <label class="form-check-label ms-2 d-flex flex-column" for="cupom-{{ cupom.id }}">
+                                <span class="fw-bold text-dark">{{ cupom.codigo }}</span>
+                                <span class="text-muted fs-7">
+                                    {% if cupom.tipo_desconto == 'PERC' %}
+                                    Ganha {{ cupom.desconto|floatformat:0 }}% de desconto no valor total.
+                                    {% else %}
+                                    Ganha R$ {{ cupom.desconto|floatformat:2 }} fixos de desconto.
+                                    {% endif %}
+                                </span>
+                            </label>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted text-center fs-7 my-2">Você não possui cupons disponíveis ou válidos no
+                            momento.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer bg-light border-top-0 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary px-4 fw-bold fs-7"
+                    data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnFinalizarCompra" class="btn btn-warning px-4 fw-bold fs-7 text-dark"
+                    style="background-color: #ffc107;">Finalizar Compra</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const precoOriginal = parseFloat("{{ item.price }}");
+
+        const radiosCupom = document.querySelectorAll('input[name="cupom_select"]');
+        const valorOriginalTela = document.getElementById('valorOriginalTela');
+        const containerPrecoDesconto = document.getElementById('containerPrecoDesconto');
+        const valorFinalTela = document.getElementById('valorFinalTela');
+        const btnFinalizarCompra = document.getElementById('btnFinalizarCompra');
+        const cupomIdEnvio = document.getElementById('cupomIdEnvio');
+        const formCompraPrincipal = document.getElementById('formCompraPrincipal');
+
+        radiosCupom.forEach(radio => {
+            radio.addEventListener('change', function () {
+                const cupomId = this.value;
+                const desconto = parseFloat(this.getAttribute('data-desconto')) || 0;
+                const tipo = this.getAttribute('data-tipo');
+
+                cupomIdEnvio.value = cupomId;
+
+                if (tipo === 'NENHUM' || desconto === 0) {
+                    valorOriginalTela.style.textDecoration = 'none';
+                    valorOriginalTela.className = "fw-bold text-dark mb-0 h3";
+                    containerPrecoDesconto.classList.add('d-none');
+                } else {
+                    let precoCalculado = precoOriginal;
+
+                    if (tipo === 'PERC') {
+                        precoCalculado = precoOriginal - (precoOriginal * (desconto / 100));
+                    } else if (tipo === 'FIXO') {
+                        precoCalculado = precoOriginal - desconto;
+                    }
+
+                    if (precoCalculado < 0) precoCalculado = 0;
+
+                    valorOriginalTela.style.textDecoration = 'line-through';
+                    valorOriginalTela.className = "fw-bold text-secondary mb-0 fs-5";
+
+                    valorFinalTela.innerText = "R$ " + precoCalculado.toFixed(2).replace('.', ',');
+                    containerPrecoDesconto.classList.remove('d-none');
+                }
+            });
+        });
+
+        btnFinalizarCompra.addEventListener('click', function () {
+            formCompraPrincipal.submit();
+        });
+    });
+</script>
+
+<style>
+    .conteneiner-padronizado {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 450px;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .img-padronizada {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .preco-container {
+        margin: 15px 0;
+        padding: 5px 0;
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+    }
+
+    .preco-cifrao {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .preco-valor {
+        font-size: 32px;
+        font-weight: 700;
+        color: #28a745;
+        line-height: 1;
+    }
+
+    .compra-form {
+        margin-top: 20px;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 15px;
+        color: #333;
+        margin-bottom: 12px;
+    }
+
+    .variacoes-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .variacoes-grid input[type="radio"] {
+        display: none;
+    }
+
+    .variacao-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+        border: 2px solid #e1e5eb;
+        border-radius: 8px;
+        cursor: pointer;
+        background-color: #fff;
+        font-size: 14px;
+        color: #444;
+        transition: all 0.2s ease;
+        margin: 0;
+    }
+
+    .variacao-card:hover {
+        border-color: #ccc;
+        background-color: #f8f9fa;
+    }
+
+    .variacoes-grid input[type="radio"]:checked+.variacao-card {
+        border-color: #ffc107;
+        background-color: #fffdf3;
+        font-weight: 600;
+        color: #000;
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.15);
+    }
+
+    .btn-compra-agora {
+        width: 100%;
+        background-color: #ffc107;
+        color: #000;
+        border: none;
+        padding: 15px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        margin-top: 10px;
+        display: block;
+    }
+
+    .btn-compra-agora:hover {
+        background-color: #e0a800;
+        color: #000;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .option-cupom:hover {
+        background-color: #f8f9fa;
+        border-color: #ccc !important;
+    }
+
+    .fs-7 {
+        font-size: 13px !important;
+    }
+</style>
+
+{% endblock %}

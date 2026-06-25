@@ -2,138 +2,26 @@
 {% load static %}
 {% block content %}
 
-<header id="header" class="header d-flex align-items-center position-relative" style="background-color: #000;">
-  <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-    <a href="{% if company %}{% url 'ecommerce:company_page' company.id_company %}{% else %}{% url 'ecommerce:index' %}{% endif %}"
-      class="logo d-flex align-items-center">
-
-      {% if company and company.logo %}
-      <img src="{{ company.logo.url }}" alt="{{ company.nome }}" class="logo-img">
-      {% else %}
-      <h1 class="sitename">Doa</h1>
-      <span>+</span>
-      {% endif %}
-    </a>
-
-    <nav id="navmenu" class="navmenu mx-auto">
-      <ul>
-        <li>
-          <a href="{% url 'ecommerce:index' %}" class="active">
-            Inicio
-          </a>
-        </li>
-
-        <li>
-          <a href="{% url 'ecommerce:companies' %}">
-            Lojas parceiras
-          </a>
-        </li>
-
-        <li class="dropdown">
-          <a href="#">
-            <span>Ajudar</span>
-            <i class="bi bi-chevron-down toggle-dropdown"></i>
-          </a>
-
-          <ul>
-            <li>
-              <a href="{% url 'ecommerce:category_page' 1 %}">
-                Causas
-              </a>
-            </li>
-
-            <li>
-              <a href="{% url 'ecommerce:category_page' 2 %}">
-                ONGs
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-
-      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-    </nav>
-
-    <!-- Busca + Usuário -->
-    <div class="d-flex align-items-center gap-3 ms-auto flex-nowrap">
-
-      <!-- Busca (desktop apenas) -->
-      <form method="get" action="" class="d-none d-md-block">
-        <input type="search" name="q" class="form-control" placeholder="Buscar..." aria-label="Search"
-          style="width:220px; color:#000;">
-      </form>
-
-      {% if user.is_authenticated %}
-
-      <!-- Saudação + Perfil -->
-      <div class="d-flex align-items-center gap-2">
-
-        <span class="text-white d-none d-lg-inline">
-          Olá, {{ user.first_name }}!
-        </span>
-
-        <div class="dropdown">
-          <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
-            aria-expanded="false">
-
-            <img src="{% static 'assets/img/people.png' %}" width="35" height="35" class="rounded-circle" alt="Perfil">
-          </a>
-
-          <ul class="dropdown-menu dropdown-menu-end">
-
-            <li>
-              <a class="dropdown-item" href="{% url 'ecommerce:home' %}">
-                Meus Cupons
-              </a>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item" href="{% url 'ecommerce:create_campanha' %}">
-                Minhas campanhas
-              </a>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item" href="{% url 'authentication:logout' %}">
-                Sair
-              </a>
-            </li>
-
-          </ul>
-        </div>
-
-      </div>
-
-      {% else %}
-
-      <a class="btn btn-outline-warning" href="{% url 'authentication:login' %}">
-        Login
-      </a>
-
-      {% endif %}
-
-    </div>
-
-  </div>
-
-
-  </div>
-
-  </div>
-</header>
-
+{% include 'includes/new_header.html' %}
 
 <section id="portfolio-details" class="portfolio-details section">
 
   <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'ecommerce:index' %}">Inicio</a></li>
+
+        <li class="breadcrumb-item">
+          {% if causa.ong and causa.ong.id_company or causa.ong_id %}
+          <a href="{% url 'ecommerce:category_page' category=2 %}">Causas de ONGs</a>
+          {% else %}
+          <a href="{% url 'ecommerce:category_page' category=1 %}">Causas Sociais</a>
+          {% endif %}
+        </li>
+
+        <li class="breadcrumb-item active" aria-current="page">{{ causa.title }}</li>
+      </ol>
+    </nav>
 
     <div class="row gy-4">
 
@@ -141,31 +29,53 @@
         <div class="portfolio-details-slider swiper init-swiper">
 
           <script type="application/json" class="swiper-config">
-                {
-                  "loop": true,
-                  "speed": 600,
-                  "autoplay": {
-                    "delay": 5000
-                  },
-                  "slidesPerView": "auto",
-                  "pagination": {
-                    "el": ".swiper-pagination",
-                    "type": "bullets",
-                    "clickable": true
-                  }
-                }
-              </script>
+        {
+          "loop": true,
+          "speed": 600,
+          "autoplay": {
+            "delay": 5000
+          },
+          "slidesPerView": "auto",
+          "pagination": {
+            "el": ".swiper-pagination",
+            "type": "bullets",
+            "clickable": true
+          }
+        }
+        </script>
 
           <div class="swiper-wrapper align-items-center">
-
-            <div class="swiper-slide">
-              <img src="{{ causa.image.url }}" alt="">
+            <div class="swiper-slide conteneiner-causa-padronizado">
+              <img src="{{ causa.image.url }}" alt="Imagem da causa" class="img-causa-padronizada">
             </div>
-
           </div>
           <div class="swiper-pagination"></div>
         </div>
       </div>
+
+      <style>
+        .conteneiner-causa-padronizado {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 500px;
+
+          background-color: #f9f9f9;
+
+          border-radius: 10px;
+
+          overflow: hidden;
+        }
+
+        .img-causa-padronizada {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+
+        }
+      </style>
+
 
       <div class="col-lg-4">
 

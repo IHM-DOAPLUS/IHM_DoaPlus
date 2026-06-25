@@ -2,26 +2,52 @@
 {% load static %}
 
 {% block content %}
-{% include 'includes/header.html' %}
-{% include 'includes/hero.html '%}
+{% include 'includes/new_header.html' %}
 
-
-<section id="portfolio" class="portfolio section">
+<section id="portfolio" class="portfolio section py-5">
     <div class="container">
+
+        <div class="mb-5 text-center text-md-start" data-aos="fade-up">
+            <span class="text-warning fw-bold text-uppercase tracking-wider"
+                style="font-size: 12px; letter-spacing: 1px;">Nossa Vitrine</span>
+            <h2 class="fw-bold text-dark m-0 mt-1">Explore Nossos Produtos</h2>
+            <p class="text-muted m-0 mt-2 fs-6">Encontre itens incríveis selecionados especialmente para você.</p>
+        </div>
+
+        {% if itens %}
         <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-            <div div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+            <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
                 {% for item in itens %}
                 <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item isotope-item filter-app">
-                    <div class="portfolio-content h-100 shadow-sm">
-                        <a href="{% url 'ecommerce:item_dashboard' item.code_item %}">
-                            {% if item.image %}
-                            <img src="{{ item.image.url }}" class="img-fluid" alt="">
-                            {% else %}
-                            <span class="text-muted">Sem imagem</span>
-                            {% endif %}
-                            <div class="portfolio-info">
-                                <h4>{{ item.name }}</h4>
+
+                    <div class="portfolio-content h-100 shadow-sm border rounded bg-white"
+                        style="transition: transform 0.2s ease-in-out;">
+                        <a href="{% url 'ecommerce:item_dashboard' item.code_item %}"
+                            class="text-decoration-none d-block h-100">
+
+                            <div class="d-flex justify-content-center align-items-center p-2"
+                                style="height: 250px; background-color: #fff; overflow: hidden;">
+                                {% if item.image %}
+                                <img src="{{ item.image.url }}" class="img-fluid" alt="{{ item.name }}"
+                                    style="max-height: 100%; object-fit: contain;">
+                                {% else %}
+                                <span class="text-muted fs-7">Sem imagem</span>
+                                {% endif %}
                             </div>
+
+                            <div class="p-3 border-top">
+                                <h5 class="text-dark mb-1 fw-semibold text-truncate"
+                                    style="font-size: 14px; min-height: 20px;" title="{{ item.name }}">
+                                    {{ item.name }}
+                                </h5>
+
+                                <div class="mt-2">
+                                    <span class="fw-bold text-success" style="font-size: 18px; display: block;">
+                                        R$ {{ item.price|floatformat:2 }}
+                                    </span>
+                                </div>
+                            </div>
+
                         </a>
                     </div>
 
@@ -29,11 +55,39 @@
                 {% endfor %}
             </div>
         </div>
+
+        {% else %}
+        <div class="row justify-content-center w-100 m-0" data-aos="fade-up">
+            <div class="col-12 text-center py-5 my-4">
+                <div class="p-5 mx-auto rounded shadow-sm bg-light"
+                    style="max-width: 500px; border: 1px dashed #dee2e6;">
+                    {% if request.GET.q %}
+                    <div class="display-4 text-muted mb-3">📦🔍</div>
+                    <h4 class="fw-bold text-dark mb-2">Nenhum produto encontrado</h4>
+                    <p class="text-secondary mb-4 fs-6">
+                        Não encontramos nenhum item correspondente a "<strong>{{ request.GET.q }}</strong>".
+                    </p>
+                    <a href="{{ request.path }}" class="btn btn-secondary fw-bold px-4 shadow-sm">
+                        Ver todos os produtos
+                    </a>
+                    {% else %}
+                    <div class="display-4 text-muted mb-3">🛍️</div>
+                    <h4 class="fw-bold text-dark mb-2">Estoque vazio</h4>
+                    <p class="text-secondary mb-4 fs-6">
+                        Nenhum produto cadastrado ou disponível nesta seção no momento.
+                    </p>
+                    <a href="/" class="btn btn-warning fw-bold px-4 text-dark shadow-sm"
+                        style="background-color: #ffc107; border: none;">
+                        Voltar para Home
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 </section>
 
-
-
 {% include 'includes/footer.html' %}
-
 {% endblock %}

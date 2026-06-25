@@ -37,31 +37,112 @@
 
 <section id="portfolio" class="portfolio section">
     <div class="container">
+        
 
+        {% if causas %}
         <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-
             <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-                {% for cmp in companies %}
+
+                {% for causa in causas %}
                 <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item isotope-item filter-app">
-                    <div class="portfolio-content h-100 shadow-sm">
+                    <div class="portfolio-content h-100 shadow-sm border rounded bg-white d-flex flex-column"
+                        style="transition: transform 0.2s ease-in-out; overflow: hidden;">
 
-                        {% if cmp.logo %}
-                        <a href="{% url 'ecommerce:company_page' cmp.id_company %}">
-                            <img src="{{ cmp.logo.url }}" alt="Logo" class="img-fluid" alt="">
+                        <a href="{% url 'ecommerce:causa_dashboard' causa.title %}" class="readmore stretched-link">
+
+                            <div class="d-flex justify-content-center align-items-center p-2 position-relative"
+                                style="height: 200px; background-color: #f8f9fa; overflow: hidden; z-index: 1;">
+                                {% if causa.image %}
+                                <img src="{{ causa.image.url }}" class="img-fluid" alt="{{ causa.title }}"
+                                    style="max-height: 100%; object-fit: contain;">
+                                {% else %}
+                                <span class="text-muted fs-7">Sem imagem</span>
+                                {% endif %}
+
+                                <span
+                                    class="position-absolute bottom-0 start-0 m-2 badge bg-dark text-white fs-7 opacity-75"
+                                    style="z-index: 2;">
+                                    {% if causa.ong %}
+                                    {{ causa.ong.name }}
+                                    {% else %}
+                                    👤 {{ causa.creator.first_name}}
+                                    {% endif %}
+                                </span>
+                            </div>
+
+                            <div class="p-3 d-flex flex-column flex-grow-1">
+                                <h5 class="fw-bold mb-1 text-truncate" style="font-size: 15px;"
+                                    title="{{ causa.title }}">
+                                    {{ causa.title }}
+                                </h5>
+                                <p class="text-muted fs-7 text-truncate mb-3" title="{{ causa.description }}">
+                                    {{ causa.description }}
+                                </p>
+
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                        <span class="fw-bold text-success" style="font-size: 16px;">
+                                            R$ {{ causa.valor_arrecadado|floatformat:2 }}
+                                        </span>
+                                        <span class="text-muted fs-7">
+                                            meta: R$ {{ causa.value|floatformat:2 }}
+                                        </span>
+                                    </div>
+                                    <div class="progress"
+                                        style="height: 8px; background-color: #e9ecef; border-radius: 4px;">
+                                        <div class="progress-bar bg-warning" role="progressbar"
+                                            style="width: {{ causa.porcentagem }}%; border-radius: 4px;"></div>
+                                    </div>
+                                    <small class="text-secondary d-block text-end mt-1 fw-semibold fs-7">
+                                        {{ causa.porcentagem|floatformat:0 }}% alcançado
+                                    </small>
+                                </div>
+                            </div>
                         </a>
-                        {% else %}
-                        <span class="text-muted">Sem logo</span>
-                        {% endif %}
-                        <div class="portfolio-info">
-                            <h4>{{ cmp.name }}</h4>
-                        </div>
-
                     </div>
                 </div>
                 {% endfor %}
-            </div>
 
+            </div>
         </div>
+
+        {% else %}
+        <div class="row justify-content-center w-100 m-0" data-aos="fade-up">
+            <div class="col-12 text-center py-5 my-5">
+                <div class="p-5 mx-auto rounded shadow-sm bg-light"
+                    style="max-width: 500px; border: 1px dashed #dee2e6;">
+
+                    {% if request.GET.q %}
+                    <div class="display-4 text-muted mb-3">🔍</div>
+                    <h4 class="fw-bold text-dark mb-2">Nenhum resultado encontrado</h4>
+                    <p class="text-secondary mb-4 fs-6">
+                        Não encontramos nenhuma causa ativa correspondente a para "<strong>{{ request.GET.q}}</strong>".
+                        Tente buscar por outros termos.
+                    </p>
+                    <a href="{% url 'ecommerce:category_page' categoria.id %}"
+                        class="btn btn-secondary fw-bold px-4 shadow-sm">
+                        Limpar Busca
+                    </a>
+                    {% else %}
+                    <div class="display-4 text-muted mb-3">🌱</div>
+                    <h4 class="fw-bold text-dark mb-2">Nenhuma causa ativa</h4>
+                    <p class="text-secondary mb-4 fs-6">
+                        {% if categoria.id == 1 %}
+                        No momento, nenhum usuário cadastrou campanhas de arrecadação.
+                        {% else %}
+                        No momento, as ONGs patches não possuem nenhuma campanha em andamento.
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'ecommerce:index' %}" class="btn btn-warning fw-bold px-4 text-dark shadow-sm"
+                        style="background-color: #ffc107; border: none;">
+                        Explorar Loja
+                    </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
     </div>
 </section>

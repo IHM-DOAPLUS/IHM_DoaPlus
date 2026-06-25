@@ -1,18 +1,15 @@
 {% load static %}
 
-<header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container-fluid container-xl d-flex align-items-center">
-
+<header id="header" class="header d-flex align-items-center position-relative" style="background-color: #000;">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
         <a href="{% if company %}{% url 'ecommerce:company_page' company.id_company %}{% else %}{% url 'ecommerce:index' %}{% endif %}"
-            class="logo d-flex align-items-center me-auto">
+            class="logo d-flex align-items-center">
 
             {% if company and company.logo %}
             <img src="{{ company.logo.url }}" alt="{{ company.nome }}" class="logo-img">
             {% else %}
-            <div class="d-flex align-items-center">
-                <h1 class="sitename mb-0">Doa</h1>
-                <span class="ms-1 text-warning fs-2">+</span>
-            </div>
+            <h1 class="sitename">Doa</h1>
+            <span>+</span>
             {% endif %}
         </a>
 
@@ -55,8 +52,10 @@
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
 
+        <!-- Busca + Usuário -->
         <div class="d-flex align-items-center gap-3 ms-auto flex-nowrap">
 
+            <!-- Busca (desktop apenas) -->
             <form method="get" action="" class="d-none d-md-block">
                 <input type="search" name="q" class="form-control" placeholder="Buscar..." aria-label="Search"
                     style="width:220px; color:#000;">
@@ -64,6 +63,7 @@
 
             {% if user.is_authenticated %}
 
+            <!-- Saudação + Perfil -->
             <div class="d-flex align-items-center gap-2">
 
                 <span class="text-white d-none d-lg-inline">
@@ -73,42 +73,40 @@
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
                         data-bs-toggle="dropdown" aria-expanded="false">
+
                         <img src="{% static 'assets/img/people.png' %}" width="35" height="35" class="rounded-circle"
                             alt="Perfil">
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width: 250px;">
                         <li>
-                            <span class="dropdown-header fw-bold text-dark px-2">
-                                Meus Cupons
-                            </span>
+                            <span class="dropdown-header fw-bold text-dark px-2">Meus Cupons <i></i></span>
                         </li>
 
-                        <li>
-                            <ul class="list-unstyled d-flex flex-column gap-2 px-2 mt-1">
-                                {% for cupom in user.cupom.all %}
-                                <li class="d-flex justify-content-between align-items-center py-1 border-bottom-subtil">
-                                    <span class="text-secondary fs-6">
-                                        {{ cupom.codigo }}
-                                    </span>
-                                    <a href="{% url 'ecommerce:companies' %}" class="btn btn-sm btn-usar-cupom">
-                                        Usar
-                                    </a>
-                                </li>
-                                {% empty %}
-                                <li class="text-center py-2 text-muted fs-7">
-                                    Nenhum cupom disponível
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </li>
+                        <ul class="list-unstyled d-flex flex-column gap-2 px-2 mt-1">
+                            {% for cupom in user.cupom.all %}
+                            <li class="d-flex justify-content-between align-items-center py-1 border-bottom-subtil">
+                                <span class="text-secondary fs-6">
+                                    {{ cupom.codigo }}
+                                </span>
+                                <a href="{% url 'ecommerce:companies' %}" class="btn btn-sm btn-usar-cupom">
+                                    Usar
+                                </a>
+                            </li>
+                            {% empty %}
+                            <li class="text-center py-2 text-muted fs-7">
+                                Nenhum cupom disponível
+                            </li>
+                            {% endfor %}
+                        </ul>
+
 
                         <li>
                             <hr class="dropdown-divider">
                         </li>
 
                         <li>
-                            <a class="dropdown-item" href="{% url 'ecommerce:minhas_campanhas' %}">
+                            <a class="dropdown-item" href="{% url 'ecommerce:create_campanha' %}">
                                 Minhas campanhas
                             </a>
                         </li>
@@ -122,14 +120,15 @@
                                 Sair
                             </a>
                         </li>
+
                     </ul>
                 </div>
-
                 <style>
                     .list-unstyled {
                         padding-left: 0;
                         list-style: none;
                     }
+
 
                     .border-bottom-subtil {
                         border-bottom: 1px solid #f1f3f5;
@@ -138,7 +137,9 @@
 
                     .border-bottom-subtil:last-child {
                         border-bottom: none;
+
                     }
+
 
                     .btn-usar-cupom {
                         background-color: #ffc107;
@@ -156,6 +157,7 @@
                         color: #000;
                     }
 
+                    /* Tamanho de fonte auxiliar */
                     .fs-7 {
                         font-size: 13px;
                     }
@@ -172,6 +174,11 @@
             {% endif %}
 
         </div>
+
+    </div>
+
+
+    </div>
 
     </div>
 </header>

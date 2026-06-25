@@ -47,9 +47,11 @@ class Item(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     level = models.CharField(max_length=30)
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
+    price = models.DecimalField(
+        max_length=10, max_digits=10, decimal_places=2, default=0.00)
     image = models.ImageField(
         upload_to='itens_images/', null=True, blank=True)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000)
 
     def __str__(self):
         return f"Nome = {self.name}"
@@ -69,6 +71,11 @@ class ItemDetails(models.Model):
 
 class Ongs(models.Model):
     name = models.CharField(max_length=100)
+    description = models.CharField(max_length=1000, default='Sem descrição') 
+    image = models.ImageField(
+        upload_to='logos_ongs/', null=True, blank=True)
+    def __str__(self):
+        return f"Nome = {self.name}"
 
 
 class Causa(models.Model):
@@ -86,6 +93,8 @@ class Causa(models.Model):
         Ongs, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(
         upload_to='itens_images/', null=True, blank=True)
+    def __str__(self):
+        return f"Nome = {self.title}"
 
 
 class Cupom(models.Model):

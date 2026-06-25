@@ -2,181 +2,69 @@
 {% load static %}
 
 {% block content %}
-<header id="header" class="header d-flex align-items-center position-relative" style="background-color: #000;">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-        <a href="{% if company %}{% url 'ecommerce:company_page' company.id_company %}{% else %}{% url 'ecommerce:index' %}{% endif %}"
-            class="logo d-flex align-items-center">
+{% include 'includes/new_header.html' %}
 
-            {% if company and company.logo %}
-            <img src="{{ company.logo.url }}" alt="{{ company.nome }}" class="logo-img">
-            {% else %}
-            <h1 class="sitename">Doa</h1>
-            <span>+</span>
-            {% endif %}
-        </a>
-
-        <nav id="navmenu" class="navmenu mx-auto">
-            <ul>
-                <li>
-                    <a href="{% url 'ecommerce:index' %}" class="active">
-                        Inicio
-                    </a>
-                </li>
-
-                <li>
-                    <a href="{% url 'ecommerce:companies' %}">
-                        Lojas parceiras
-                    </a>
-                </li>
-
-                <li class="dropdown">
-                    <a href="#">
-                        <span>Ajudar</span>
-                        <i class="bi bi-chevron-down toggle-dropdown"></i>
-                    </a>
-
-                    <ul>
-                        <li>
-                            <a href="{% url 'ecommerce:category_page' 1 %}">
-                                Causas
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="{% url 'ecommerce:category_page' 2 %}">
-                                ONGs
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-        </nav>
-
-        <div class="d-flex align-items-center gap-3 ms-auto flex-nowrap">
-
-            <form method="get" action="" class="d-none d-md-block">
-                <input type="search" name="q" class="form-control" placeholder="Buscar..." aria-label="Search"
-                    style="width:220px; color:#000;">
-            </form>
-
-            {% if user.is_authenticated %}
-
-            <div class="d-flex align-items-center gap-2">
-
-                <span class="text-white d-none d-lg-inline">
-                    Olá, {{ user.first_name }}!
-                </span>
-
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-
-                        <img src="{% static 'assets/img/people.png' %}" width="35" height="35" class="rounded-circle"
-                            alt="Perfil">
-                    </a>
-
-                    <ul class="dropdown-menu dropdown-menu-end">
-
-                        <li>
-                            <a class="dropdown-item" href="{% url 'ecommerce:home' %}">
-                                Meus Cupons
-                            </a>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{% url 'ecommerce:create_item' %}">
-                                Minhas campanhas
-                            </a>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="{% url 'authentication:logout' %}">
-                                Sair
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-
-            </div>
-
-            {% else %}
-
-            <a class="btn btn-outline-warning" href="{% url 'authentication:login' %}">
-                Login
-            </a>
-
-            {% endif %}
-
-        </div>
-
-    </div>
-</header>
-
-<section>
+<section class="py-5">
     <div class="page-title" data-aos="fade">
         <div class="heading">
-            <div class="container">
+            <div class="container mb-4">
                 <div class="row d-flex justify-content-center text-center">
                     <div class="col-lg-8">
-                        <h1>Crie sua Campanha Solidária</h1>
-                        <p class="mb-0">Conte sua história, defina uma meta e permita que outras pessoas contribuam com
-                            a sua causa.</p>
+                        <h1 class="fw-bold text-dark">Crie sua Campanha Solidária</h1>
+                        <p class="text-muted mb-0">Conte sua história, defina uma meta e permita que outras pessoas
+                            contribuam com a sua causa.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container" data-aos="fade-up">
-        <form class="was-validated" method="POST" action="" enctype="multipart/form-data" id="formCampanha">
+    <div class="container" data-aos="fade-up" style="max-width: 700px;">
+        <form class="was-validated p-4 border rounded bg-white shadow-sm" method="POST" action=""
+            enctype="multipart/form-data" id="formCampanha">
             {% csrf_token %}
 
             <div class="mb-3">
-                <label for="titulo" class="form-label">Titulo</label>
-                <textarea class="form-control" id="titulo" name="titulo"
-                    placeholder="Insira o titulo da sua campanha..." required></textarea>
-                <div class="invalid-feedback">Por favor, insira o titulo da campanha na área de texto.</div>
+                <label for="title" class="form-label fw-bold">Título</label>
+                <input type="text" class="form-control" id="title" name="title"
+                    placeholder="Insira o título da sua campanha..." required>
+                <div class="invalid-feedback">Por favor, insira o título da campanha.</div>
             </div>
 
             <div class="mb-3">
-                <label for="descricao" class="form-label">Descrição da campanha</label>
-                <textarea class="form-control" id="descricao" name="descricao" placeholder="Descreva a sua campanha..."
-                    required></textarea>
+                <label for="description" class="form-label fw-bold">Descrição da campanha</label>
+                <textarea class="form-control" id="description" name="description" rows="4"
+                    placeholder="Descreva detalhadamente a sua campanha e objetivos..." required></textarea>
                 <div class="invalid-feedback">Por favor, insira a descrição da campanha na área de texto.</div>
             </div>
 
             <div class="mb-3">
-                <label for="valor" class="form-label">Valor a ser arrecadado</label>
-                <input type="number" class="form-control" id="valor" name="valor"
-                    placeholder="Insira o valor da sua campanha" min="0" step="0.01" required>
-                <div class="invalid-feedback">Insira o valor a ser arrecadado em sua campanha...</div>
+                <label for="value" class="form-label fw-bold">Valor a ser arrecadado</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text">R$</span>
+                    <input type="number" class="form-control" id="value" name="value" placeholder="0,00" min="1"
+                        step="0.01" required>
+                    <div class="invalid-feedback">Insira um valor mínimo válido a ser arrecadado.</div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <input type="file" class="form-control" id="imagem" name="imagem" aria-label="file example" required>
-                <div class="invalid-feedback">Selecione uma imagem</div>
+            <div class="mb-4">
+                <label for="image" class="form-label fw-bold">Imagem de Capa</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                <div class="invalid-feedback">Selecione uma imagem para ilustrar a campanha.</div>
             </div>
 
             <div id="liveAlertPlaceholder" class="mb-3"></div>
 
-            <div class="mb-3 d-flex gap-2">
-                <button class="btn btn-primary" type="submit">Enviar</button>
-                <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
+            <div class="d-flex gap-2 justify-content-end">
+                <a href="javascript:history.back()" class="btn btn-secondary px-4">Cancelar</a>
+                <button class="btn btn-warning text-dark fw-bold px-4" style="background-color: #ffc107; border: none;"
+                    type="submit">Criar Campanha</button>
             </div>
         </form>
     </div>
 </section>
+
 <script>
     const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
     const formCampanha = document.getElementById('formCampanha');
@@ -184,7 +72,7 @@
     const appendAlert = (message, type) => {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `<div class="alert alert-${type} alert-dismissible shadow-sm" role="alert">`,
             `   <div>${message}</div>`,
             '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
             '</div>'
@@ -196,17 +84,13 @@
 
     if (formCampanha) {
         formCampanha.addEventListener('submit', function (event) {
-            // Verifica se o formulário passou na validação do Bootstrap (campos preenchidos, arquivo anexado, etc.)
             if (!this.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
-                return; // Para a execução aqui e mostra os erros visuais do Bootstrap
+                return;
             }
 
-            // Se o formulário for válido, impede o recarregamento padrão para fazer o envio via Fetch
             event.preventDefault();
-
-            // O FormData captura tudo, inclusive o arquivo de imagem perfeitamente
             const formData = new FormData(this);
 
             fetch(window.location.href, {
@@ -218,25 +102,23 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        // Sucesso! Mostra o alerta verde
                         appendAlert('Campanha criada com sucesso! Redirecionando...', 'success');
 
-                        // Aguarda 2 segundos e atualiza/redireciona a página
+                        // Redireciona o usuário para gerenciar suas campanhas criadas após 2 segundos
                         setTimeout(() => {
-                            window.location.reload();
+                            window.location.href = "{% url 'ecommerce:create_campanha' %}";
                         }, 2000);
 
                     } else {
-                        appendAlert('Houve um erro ao criar a campanha. Verifique os dados.', 'danger');
+                        appendAlert('Houve um erro ao criar a campanha. Verifique se os dados estão corretos.', 'danger');
                     }
                 })
                 .catch(error => {
-                    appendAlert('Erro de conexão. Tente novamente.', 'danger');
+                    appendAlert('Erro de conexão com o servidor. Tente novamente.', 'danger');
                 });
         });
     }
 </script>
 
 {% include 'includes/footer.html' %}
-
 {% endblock %}
