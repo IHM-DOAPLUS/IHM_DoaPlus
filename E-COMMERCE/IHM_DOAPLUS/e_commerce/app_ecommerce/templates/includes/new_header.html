@@ -45,6 +45,11 @@
                     style="width:180px; font-size: 14px;">
             </form>
 
+            <button type="button" class="btn-ajuda" data-bs-toggle="modal" data-bs-target="#modalAjuda"
+                title="Como funciona?">
+                <i class="bi bi-question-lg"></i>
+            </button>
+
             {% if user.is_authenticated %}
             <div class="d-flex align-items-center gap-2">
                 <span class="text-white d-none d-lg-inline fs-7">
@@ -98,7 +103,81 @@
     </div>
 </header>
 
+<div class="modal fade" id="modalAjuda" tabindex="-1" aria-labelledby="modalAjudaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-dark" style="border-radius: 12px; overflow: hidden;">
+            <div class="modal-header bg-warning text-dark border-0 py-3">
+                <h5 class="modal-title fw-bold fs-5 d-flex align-items-center gap-2" id="modalAjudaLabel">
+                    <i class="bi bi-info-circle-fill"></i> Como funciona o Doa+?
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="mb-4">
+                    <h6 class="fw-bold text-dark d-flex align-items-center gap-2 mb-2">
+                        <span
+                            class="badge bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center"
+                            style="width:22px; height:22px; font-size:12px;">1</span>
+                        Funcionamento dos Cupons
+                    </h6>
+                    <p class="text-muted mb-0" style="font-size: 14px; padding-left: 30px; line-height: 1.5;">
+                        Os cupons oferecem descontos exclusivos em nossas lojas parceiras. Ao escolher um cupom e clicar
+                        em "Usar", você será direcionado para aplicar o código no site parceiro.
+                    </p>
+                </div>
+
+                <div class="mb-2">
+                    <h6 class="fw-bold text-dark d-flex align-items-center gap-2 mb-2">
+                        <span
+                            class="badge bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center"
+                            style="width:22px; height:22px; font-size:12px;">2</span>
+                        Como geramos Doações?
+                    </h6>
+                    <p class="text-muted mb-0" style="font-size: 14px; padding-left: 30px; line-height: 1.5;">
+                        Toda compra realizada através dos nossos cupons gera uma comissão das marcas parceiras para o
+                        Doa+. Nós repassamos esse valor diretamente em forma de apoio financeiro para as ONGs e Causas
+                        cadastradas. Você economiza e ajuda ao mesmo tempo!
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0 justify-content-end">
+                <button type="button" class="btn btn-sm btn-warning fw-bold px-4 text-dark" data-bs-dismiss="modal"
+                    style="border-radius: 6px;">Entendi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
+    /* Estilo Controlado do Botão de Ajuda para evitar quebras */
+    .btn-ajuda {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        min-height: 34px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 0;
+        flex-shrink: 0;
+        /* Impede que o botão esmague em telas menores */
+    }
+
+    .btn-ajuda:hover {
+        background-color: #ffc107;
+        color: #000;
+        border-color: #ffc107;
+        transform: scale(1.05);
+    }
+
     /* Remove a seta padrão do Bootstrap ao lado da foto do perfil */
     .hide-caret::after {
         display: none !important;

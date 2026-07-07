@@ -227,7 +227,7 @@ def causa_dashboard(request, title):
         cupom_ganho = None
         if request.user.is_authenticated:
             try:
-                if 50.00 <= valor < 100.00:
+                if valor < 100.00:
                     cupom_ganho = Cupom.objects.get(codigo="CUPOM10")
                 elif 100.00 <= valor < 200.00:
                     cupom_ganho = Cupom.objects.get(codigo="CUPOM20")
