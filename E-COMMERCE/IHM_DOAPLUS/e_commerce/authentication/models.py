@@ -38,7 +38,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 
-    cupom = models.ManyToManyField('app_ecommerce.Cupom', blank=True)
+    cupom = models.ManyToManyField(
+        'app_ecommerce.Cupom', through='app_ecommerce.UserCupom', blank=True)
 
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)

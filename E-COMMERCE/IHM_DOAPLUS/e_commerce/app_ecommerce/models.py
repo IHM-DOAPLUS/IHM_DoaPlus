@@ -71,9 +71,10 @@ class ItemDetails(models.Model):
 
 class Ongs(models.Model):
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=1000, default='Sem descrição') 
+    description = models.CharField(max_length=1000, default='Sem descrição')
     image = models.ImageField(
         upload_to='logos_ongs/', null=True, blank=True)
+
     def __str__(self):
         return f"Nome = {self.name}"
 
@@ -93,6 +94,7 @@ class Causa(models.Model):
         Ongs, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(
         upload_to='itens_images/', null=True, blank=True)
+
     def __str__(self):
         return f"Nome = {self.title}"
 
@@ -112,11 +114,23 @@ class Cupom(models.Model):
     )
 
     validade = models.DateTimeField()
-    usado = models.BooleanField(default=False)
+
     criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.codigo
+
+
+class UserCupom(models.Model):
+    user = models.ForeignKey('authentication.User', on_delete=models.CASCADE)
+    cupom = models.ForeignKey('app_ecommerce.Cupom', on_delete=models.CASCADE)
+    quant = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('user', 'cupom')
+
+    def __str__(self):
+        return f'{self.user.email} - {self.cupom.codigo} ({self.quant})'
 
 
 class Image(models.Model):

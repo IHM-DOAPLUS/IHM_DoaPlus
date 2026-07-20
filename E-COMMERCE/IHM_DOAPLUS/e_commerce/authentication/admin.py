@@ -3,6 +3,8 @@ from django.contrib import admin
 from .models import _Group, Group, User
 from django.core.exceptions import ValidationError
 
+from app_ecommerce.admin import UserCupomInline
+
 
 class UserForm(forms.ModelForm):
     new_password = forms.CharField(
@@ -34,11 +36,12 @@ class UserForm(forms.ModelForm):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     form = UserForm
+    inlines = [UserCupomInline]
 
     def get_fieldsets(self, request, obj=...):
         fieldsets = [
             ("User Info", {"fields": [
-             "email", "first_name", "last_name", "phone", "company", "cupom"]}),
+             "email", "first_name", "last_name", "phone", "company"]}),
         ]
         if obj:
             fieldsets += [
@@ -56,4 +59,3 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.unregister(_Group)
 admin.site.register(Group)
-

@@ -10,7 +10,7 @@ from decimal import Decimal
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterItem, RegisterCompany, RegisterCausa
-from .models import Company, Item, ItemDetails, Image, Category, User, Ongs, Causa, Cupom
+from .models import Company, Item, ItemDetails, Image, Category, User, Ongs, Causa, Cupom, UserCupom
 
 
 def index(request):
@@ -99,9 +99,12 @@ def create_campanha(request):
             causa.save()
 
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                return JsonResponse({'sucesso': True}, status=201)
+                return JsonResponse({
+                    'sucesso': True,
+                    'url': reverse('ecommerce:causa_dashboard', args=[causa.title])
+                }, status=201)
 
-            return redirect('ecommerce:create_campanha')
+            return redirect('ecommerce:causa_dashboard', title=causa.title)
         else:
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({'sucesso': False, 'erros': form.errors}, status=400)
@@ -184,10 +187,9 @@ def causa_dashboard(request, title):
     user = request.user
     query = request.GET.get('q')
 
-    # 1. TRATAMENTO DA BARRA DE PESQUISA (Executado antes de carregar o resto da página)
     if query:
         query = query.strip()
-        # CORREÇÃO: Mudado de 'name__icontains' para 'title__icontains'
+
         causas = Causa.objects.filter(title__icontains=query)
 
         if causas.count() >= 2:
@@ -195,15 +197,14 @@ def causa_dashboard(request, title):
             return render(request, 'index.html', context)
 
         elif causas.count() == 1:
-            # CORREÇÃO: Faz o redirect real para atualizar a URL com o título novo
+
             causa_encontrada = causas.first()
             return redirect('ecommerce:causa_dashboard', title=causa_encontrada.title)
 
         else:
-            # CORREÇÃO: Se não achou nenhuma, joga para o index renderizar o estado vazio
+
             return render(request, 'index.html', {'causas': causas, 'query': query})
 
-    # 2. FLUXO NORMAL DO GET (Caso não haja busca)
     causa = get_object_or_404(Causa, title=title)
 
     if causa.value > 0:
@@ -212,7 +213,6 @@ def causa_dashboard(request, title):
     else:
         causa.porcentagem = 0
 
-    # 3. TRATAMENTO DO DO POST (Doação/Apoio à causa)
     if request.method == "POST":
         valor_str = request.POST.get("valor")
 
@@ -221,7 +221,18 @@ def causa_dashboard(request, title):
                 return JsonResponse({'sucesso': False, 'erro': 'Valor inválido'}, status=400)
             return redirect('ecommerce:causa_dashboard', title=causa.title)
 
-        valor = float(valor_str)
+        try:
+            valor = float(valor_str)
+        except ValueError:
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'sucesso': False, 'erro': 'Valor inválido'}, status=400)
+            return redirect('ecommerce:causa_dashboard', title=causa.title)
+
+        if valor <= 0:
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'sucesso': False, 'erro': 'O valor da doação deve ser maior que zero'}, status=400)
+            return redirect('ecommerce:causa_dashboard', title=causa.title)
+
         causa.valor_arrecadado += Decimal(str(valor))
 
         cupom_ganho = None
@@ -237,7 +248,11 @@ def causa_dashboard(request, title):
                     cupom_ganho = Cupom.objects.get(codigo="VOUCHER100")
 
                 if cupom_ganho:
-                    request.user.cupom.add(cupom_ganho)
+                    user_cupom, _ = UserCupom.objects.get_or_create(
+                        user=request.user, cupom=cupom_ganho
+                    )
+                    user_cupom.quant += 1
+                    user_cupom.save()
 
             except Cupom.DoesNotExist:
                 print("Cupom não encontrado no sistema.")
@@ -285,7 +300,7 @@ def item_dashboard(request, id):
 
     cupons_validos = []
     if user.is_authenticated:
-        # Buscamos apenas os cupons vinculados a ele que estão na validade
+
         cupons_validos = user.cupom.filter(validade__gte=timezone.now())
 
     if request.method == 'POST':
@@ -295,7 +310,7 @@ def item_dashboard(request, id):
         valor_final = item.price
 
         if cupom_id and cupom_id != "0":
-            # Captura o cupom associado ao usuário
+
             cupom = get_object_or_404(user.cupom, id=cupom_id)
 
             if cupom.tipo_desconto == 'PERC':

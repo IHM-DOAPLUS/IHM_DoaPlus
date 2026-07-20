@@ -20,8 +20,8 @@
     </div>
 
     <div class="container" data-aos="fade-up" style="max-width: 700px;">
-        <form class="was-validated p-4 border rounded bg-white shadow-sm" method="POST" action=""
-            enctype="multipart/form-data" id="formCampanha">
+        <form class="p-4 border rounded bg-white shadow-sm" method="POST" action="" enctype="multipart/form-data"
+            id="formCampanha">
             {% csrf_token %}
 
             <div class="mb-3">
@@ -87,9 +87,11 @@
             if (!this.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
+                this.classList.add('was-validated');
                 return;
             }
 
+            this.classList.add('was-validated');
             event.preventDefault();
             const formData = new FormData(this);
 
@@ -104,7 +106,6 @@
                     if (response.ok) {
                         appendAlert('Campanha criada com sucesso! Redirecionando...', 'success');
 
-                        // Redireciona o usuário para gerenciar suas campanhas criadas após 2 segundos
                         setTimeout(() => {
                             window.location.href = "{% url 'ecommerce:create_campanha' %}";
                         }, 2000);

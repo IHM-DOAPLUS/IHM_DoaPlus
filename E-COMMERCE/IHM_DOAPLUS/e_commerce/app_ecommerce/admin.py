@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from app_ecommerce.models import Category, ItemDetails, Company, Item, Image, Color, Size, Storage, Ongs, Causa, Cupom
+from app_ecommerce.models import Category, ItemDetails, Company, Item, Image, Color, Size, Storage, Ongs, Causa, Cupom, UserCupom
+
 
 class ItemDetailsInlinte(admin.TabularInline):
     model = ItemDetails
@@ -16,6 +17,11 @@ class ItemAdmin(admin.ModelAdmin):
         ImageInline,
         ItemDetailsInlinte
     ]
+
+
+class UserCupomInline(admin.TabularInline):
+    model = UserCupom
+    extra = 0
 
 
 admin.site.register(Causa)
