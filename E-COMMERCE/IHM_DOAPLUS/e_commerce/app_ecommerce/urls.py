@@ -25,7 +25,8 @@ urlpatterns = [
     path('item/categoria/<int:category>/',
          views.category_page, name='category_page'),
 
-    path('meuscupons/', views.meus_cupons, name='meus_cupons')
+    path('meuscupons/', views.meus_cupons, name='meus_cupons'),
+    path('minhas-campanhas/editar/<int:pk>/', views.editar_campanha, name='editar_campanha'),
 
 
 

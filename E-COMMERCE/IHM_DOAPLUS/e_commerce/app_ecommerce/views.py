@@ -2,7 +2,7 @@ from .models import Causa, Cupom  # Ajuste os seus imports conforme necessário
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.urls import reverse
 from django.utils import timezone
 from decimal import Decimal
@@ -149,19 +149,56 @@ def create_company(request):
 def minhas_campanhas(request):
     query = request.GET.get('q')
 
+    causas = Causa.objects.filter(creator=request.user)
+
     if query:
         query = query.strip()
+        causas = causas.filter(title__icontains=query)
 
-        causas = Causa.objects.filter(
-            creator=request.user, title__icontains=query)
-        return render(request, 'index.html', {'causas': causas, 'query': query})
-
-    causas = Causa.objects.filter(creator=request.user).order_by('-id')
+    causas = causas.order_by('-id')
 
     context = {
         'causas': causas,
+        'query': query,
     }
     return render(request, 'minhas_campanhas.html', context)
+
+
+@login_required
+def editar_campanha(request, pk):
+    # get_object_or_404 já garante que só o dono da campanha pode acessá-la/editá-la
+    causa = get_object_or_404(Causa, pk=pk, creator=request.user)
+
+    if request.method == 'POST':
+        title = request.POST.get('title', '').strip()
+        description = request.POST.get('description', '').strip()
+        value = request.POST.get('value')
+        image = request.FILES.get('image')
+
+        if not title or not description or not value:
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return HttpResponseBadRequest('Dados incompletos.')
+            return render(request, 'editar_campanha.html', {
+                'causa': causa,
+                'erro': 'Preencha todos os campos obrigatórios.'
+            })
+
+        causa.title = title
+        causa.description = description
+        causa.value = value
+
+        if image:
+            causa.image = image
+
+        causa.save()
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': True})
+
+        return redirect('ecommerce:minhas_campanhas')
+
+    context = {'causa': causa}
+    return render(request, 'editar_campanha.html', context)
 
 
 def company_page(request, id):

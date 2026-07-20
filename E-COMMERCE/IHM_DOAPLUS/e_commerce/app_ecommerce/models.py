@@ -122,8 +122,16 @@ class Cupom(models.Model):
 
 
 class UserCupom(models.Model):
-    user = models.ForeignKey('authentication.User', on_delete=models.CASCADE)
-    cupom = models.ForeignKey('app_ecommerce.Cupom', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        'authentication.User',
+        on_delete=models.CASCADE,
+        related_name='cupons'
+    )
+    cupom = models.ForeignKey(
+        'app_ecommerce.Cupom',
+        on_delete=models.CASCADE,
+        related_name='usuarios'
+    )
     quant = models.PositiveIntegerField(default=0)
 
     class Meta:

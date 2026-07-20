@@ -47,7 +47,7 @@
                 <input type="search" name="q" class="form-control text-dark" placeholder="Buscar..." aria-label="Search"
                     style="width:180px; font-size: 14px;">
             </form>
-            
+
             <button type="button" class="btn-ajuda" data-bs-toggle="modal" data-bs-target="#modalAjuda"
                 title="Como funciona?">
                 <i class="bi bi-question-lg"></i>
@@ -71,9 +71,15 @@
 
                         <li>
                             <ul class="list-unstyled d-flex flex-column gap-2 px-2 mt-1">
-                                {% for cupom in user.cupom.all %}
+                                {% for user_cupom in user.cupons.all %}
                                 <li class="d-flex justify-content-between align-items-center py-1 border-bottom-subtil">
-                                    <span class="text-secondary fs-6">{{ cupom.codigo }}</span>
+                                    <span class="text-secondary fs-6 d-flex align-items-center gap-2">
+                                        {{ user_cupom.cupom.codigo }}
+                                        <span class="badge bg-warning-subtle text-warning-emphasis fw-bold"
+                                            style="font-size: 11px;">
+                                            x{{ user_cupom.quant }}
+                                        </span>
+                                    </span>
                                     <a href="{% url 'ecommerce:companies' %}" class="btn btn-sm btn-usar-cupom">Usar</a>
                                 </li>
                                 {% empty %}
@@ -107,7 +113,7 @@
 </header>
 
 <div class="modal fade" id="modalAjuda" tabindex="-1" aria-labelledby="modalAjudaLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content text-dark" style="border-radius: 12px; overflow: hidden;">
             <div class="modal-header bg-warning text-dark border-0 py-3">
                 <h5 class="modal-title fw-bold fs-5 d-flex align-items-center gap-2" id="modalAjudaLabel">
@@ -115,33 +121,89 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body p-4">
+            <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
+
+                <!-- 1. Como o site funciona -->
                 <div class="mb-4">
                     <h6 class="fw-bold text-dark d-flex align-items-center gap-2 mb-2">
                         <span
                             class="badge bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center"
                             style="width:22px; height:22px; font-size:12px;">1</span>
-                        Funcionamento dos Cupons
+                        Como o Doa+ funciona
                     </h6>
                     <p class="text-muted mb-0" style="font-size: 14px; padding-left: 30px; line-height: 1.5;">
-                        Os cupons oferecem descontos exclusivos em nossas lojas parceiras. Ao escolher um cupom e clicar
-                        em "Usar", você será direcionado para aplicar o código no site parceiro.
+                        O Doa+ conecta suas doações a descontos reais em lojas parceiras. Você faz uma doação para
+                        uma ONG ou causa cadastrada na plataforma e, em troca, recebe um cupom de desconto
+                        exclusivo. Esse cupom pode ser usado em compras nas lojas parceiras, ou seja, você ajuda
+                        quem precisa e ainda economiza na próxima compra.
                     </p>
                 </div>
 
-                <div class="mb-2">
+                <!-- 2. Como você ganha cupons -->
+                <div class="mb-4">
                     <h6 class="fw-bold text-dark d-flex align-items-center gap-2 mb-2">
                         <span
                             class="badge bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center"
                             style="width:22px; height:22px; font-size:12px;">2</span>
-                        Como geramos Doações?
+                        Como você ganha cupons
+                    </h6>
+                    <p class="text-muted mb-2" style="font-size: 14px; padding-left: 30px; line-height: 1.5;">
+                        O cupom que você recebe depende do valor da sua doação: quanto maior o valor doado, melhor
+                        o cupom liberado para você usar.
+                    </p>
+                    <div class="ps-4">
+                        <ul class="list-unstyled mb-0" style="font-size: 14px;">
+                            <li class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-ticket-perforated-fill text-warning"></i>
+                                Doações até R$ 99,99 → cupom de desconto 10% <strong>CUPOM10</strong>
+                            </li>
+                            <li class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-ticket-perforated-fill text-warning"></i>
+                                Doações de R$ 100,00 a R$ 199,99 → cupom de desconto 20% <strong>CUPOM20</strong>
+                            </li>
+                            <li class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-ticket-perforated-fill text-warning"></i>
+                                Doações de R$ 200,00 a R$ 499,99 → voucher de R$50 <strong>VOUCHER50</strong>
+                            </li>
+                            <li class="d-flex align-items-center gap-2 mb-0">
+                                <i class="bi bi-ticket-perforated-fill text-warning"></i>
+                                Doações a partir de R$ 500,00 → voucher de R$100 <strong>VOUCHER100</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 3. Como usar o cupom -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-dark d-flex align-items-center gap-2 mb-2">
+                        <span
+                            class="badge bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center"
+                            style="width:22px; height:22px; font-size:12px;">3</span>
+                        Como usar seu cupom
                     </h6>
                     <p class="text-muted mb-0" style="font-size: 14px; padding-left: 30px; line-height: 1.5;">
-                        Toda compra realizada através dos nossos cupons gera uma comissão das marcas parceiras para o
-                        Doa+. Nós repassamos esse valor diretamente em forma de apoio financeiro para as ONGs e Causas
-                        cadastradas. Você economiza e ajuda ao mesmo tempo!
+                        Va na aba lojas, busque por uma loja que melhor atenda sua necessidade, escolha um produto e
+                        aplique o cupom de desconto para finalizar a compra.
                     </p>
                 </div>
+
+                <!-- 4. Como criar uma campanha -->
+                <div class="mb-2">
+                    <h6 class="fw-bold text-dark d-flex align-items-center gap-2 mb-2">
+                        <span
+                            class="badge bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center"
+                            style="width:22px; height:22px; font-size:12px;">4</span>
+                        Como criar uma campanha
+                    </h6>
+                    <p class="text-muted mb-0" style="font-size: 14px; padding-left: 30px; line-height: 1.5;">
+                        Para criar uma nova campanha, na tela inicial do site bem ao centro da tela voce vai perceber um
+                        botão amarelo escrito <strong>"Criar uma Campanha"</strong>. Preencha o título, a descrição, a
+                        meta de
+                        arrecadação e uma imagem. Após enviar, ela ficará disponível na plataforma para
+                        receber doações dos usuários.
+                    </p>
+                </div>
+
             </div>
             <div class="modal-footer border-0 pt-0 justify-content-end">
                 <button type="button" class="btn btn-sm btn-warning fw-bold px-4 text-dark" data-bs-dismiss="modal"

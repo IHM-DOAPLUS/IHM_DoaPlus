@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'includes/new_header.html' %}
+
+<section class="py-5">
+    <div class="page-title" data-aos="fade">
+        <div class="heading">
+            <div class="container mb-4">
+                <div class="row d-flex justify-content-center text-center">
+                    <div class="col-lg-8">
+                        <h1 class="fw-bold text-dark">Editar Campanha</h1>
+                        <p class="text-muted mb-0">Atualize as informações da sua campanha solidária.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" data-aos="fade-up" style="max-width: 700px;">
+        <form class="p-4 border rounded bg-white shadow-sm" method="POST" action="" enctype="multipart/form-data"
+            id="formEditarCampanha">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="title" class="form-label fw-bold">Título</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ causa.title }}" required>
+                <div class="invalid-feedback">Por favor, insira o título da campanha.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label fw-bold">Descrição da campanha</label>
+                <textarea class="form-control" id="description" name="description" rows="4"
+                    required>{{ causa.description }}</textarea>
+                <div class="invalid-feedback">Por favor, insira a descrição da campanha na área de texto.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="value" class="form-label fw-bold">Valor a ser arrecadado</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text">R$</span>
+                    <input type="number" class="form-control" id="value" name="value" value="{{ causa.value }}" min="1"
+                        step="0.01" required>
+                    <div class="invalid-feedback">Insira um valor mínimo válido a ser arrecadado.</div>
+                </div>
+                <div class="form-text">Já arrecadado até agora: R$ {{ causa.valor_arrecadado|floatformat:2 }}</div>
+            </div>
+
+            <div class="mb-4">
+                <label for="image" class="form-label fw-bold">Imagem de Capa</label>
+                {% if causa.image %}
+                <div class="mb-2">
+                    <img src="{{ causa.image.url }}" alt="{{ causa.title }}" class="img-fluid rounded"
+                        style="max-height: 150px;">
+                </div>
+                {% endif %}
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                <div class="form-text">Deixe em branco para manter a imagem atual.</div>
+            </div>
+
+            {% if erro %}
+            <div class="alert alert-danger">{{ erro }}</div>
+            {% endif %}
+
+            <div id="liveAlertPlaceholder" class="mb-3"></div>
+
+            <div class="d-flex gap-2 justify-content-end">
+                <a href="{% url 'ecommerce:minhas_campanhas' %}" class="btn btn-secondary px-4">Cancelar</a>
+                <button class="btn btn-warning text-dark fw-bold px-4" style="background-color: #ffc107; border: none;"
+                    type="submit" id="btnSalvarEdicao">
+                    <span id="btnSalvarEdicaoText">Salvar Alterações</span>
+                    <span id="btnSalvarEdicaoSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"
+                        aria-hidden="true"></span>
+                </button>
+            </div>
+        </form>
+
+        <div id="painelSucesso" class="p-5 border rounded bg-white shadow-sm text-center d-none">
+            <div class="mb-3">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+            </div>
+            <h4 class="fw-bold text-dark mb-2">Campanha atualizada com sucesso!</h4>
+            <p class="text-muted mb-4">As alterações já estão refletidas na plataforma.</p>
+            <p class="text-muted small mb-0">
+                Redirecionando em <span id="contadorRedirect" class="fw-bold">3</span>s...
+            </p>
+            <div class="progress mt-2" style="height: 4px;">
+                <div id="barraProgresso" class="progress-bar bg-warning" role="progressbar" style="width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+    const formEditar = document.getElementById('formEditarCampanha');
+    const painelSucesso = document.getElementById('painelSucesso');
+    const btnSalvar = document.getElementById('btnSalvarEdicao');
+    const btnSalvarText = document.getElementById('btnSalvarEdicaoText');
+    const btnSalvarSpinner = document.getElementById('btnSalvarEdicaoSpinner');
+
+    const appendAlert = (message, type) => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible shadow-sm" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+        ].join('');
+
+        alertPlaceholder.innerHTML = '';
+        alertPlaceholder.append(wrapper);
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    const setLoadingState = (isLoading) => {
+        btnSalvar.disabled = isLoading;
+        btnSalvarText.textContent = isLoading ? 'Salvando...' : 'Salvar Alterações';
+        btnSalvarSpinner.classList.toggle('d-none', !isLoading);
+    }
+
+    const mostrarSucesso = () => {
+        formEditar.classList.add('d-none');
+        painelSucesso.classList.remove('d-none');
+        painelSucesso.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        let segundos = 3;
+        const contador = document.getElementById('contadorRedirect');
+        const barra = document.getElementById('barraProgresso');
+
+        const intervalo = setInterval(() => {
+            segundos -= 1;
+            contador.textContent = segundos;
+            barra.style.width = `${(segundos / 3) * 100}%`;
+
+            if (segundos <= 0) {
+                clearInterval(intervalo);
+                window.location.href = "{% url 'ecommerce:minhas_campanhas' %}";
+            }
+        }, 1000);
+    }
+
+    if (formEditar) {
+        formEditar.addEventListener('submit', function (event) {
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                this.classList.add('was-validated');
+                return;
+            }
+
+            this.classList.add('was-validated');
+            event.preventDefault();
+            setLoadingState(true);
+
+            const formData = new FormData(this);
+
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        mostrarSucesso();
+                    } else {
+                        setLoadingState(false);
+                        appendAlert('Houve um erro ao salvar as alterações. Verifique os dados.', 'danger');
+                    }
+                })
+                .catch(error => {
+                    setLoadingState(false);
+                    appendAlert('Erro de conexão com o servidor. Tente novamente.', 'danger');
+                });
+        });
+    }
+</script>
+
+{% include 'includes/footer.html' %}
+{% endblock %}

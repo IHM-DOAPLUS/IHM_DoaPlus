@@ -57,69 +57,118 @@
             <div id="liveAlertPlaceholder" class="mb-3"></div>
 
             <div class="d-flex gap-2 justify-content-end">
-                <a href="javascript:history.back()" class="btn btn-secondary px-4">Cancelar</a>
+                <a href="javascript:history.back()" class="btn btn-secondary px-4" id="btnCancelar">Cancelar</a>
                 <button class="btn btn-warning text-dark fw-bold px-4" style="background-color: #ffc107; border: none;"
-                    type="submit">Criar Campanha</button>
+                    type="submit" id="btnCriarCampanha">
+                    <span id="btnCriarCampanhaText">Criar Campanha</span>
+                    <span id="btnCriarCampanhaSpinner" class="spinner-border spinner-border-sm ms-2 d-none"
+                        role="status" aria-hidden="true"></span>
+                </button>
             </div>
         </form>
+
+        <!-- Painel de sucesso: some fica escondido até a confirmação da criação -->
+        <div id="painelSucesso" class="p-5 border rounded bg-white shadow-sm text-center d-none">
+            <div class="mb-3">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+            </div>
+            <h4 class="fw-bold text-dark mb-2">Campanha criada com sucesso!</h4>
+            <p class="text-muted mb-4">Sua campanha já está disponível na plataforma para receber doações.</p>
+            <p class="text-muted small mb-0">
+                Redirecionando em <span id="contadorRedirect" class="fw-bold">3</span>s...
+            </p>
+            <div class="progress mt-2" style="height: 4px;">
+                <div id="barraProgresso" class="progress-bar bg-warning" role="progressbar" style="width: 100%;"></div>
+            </div>
+        </div>
     </div>
-</section>
 
-<script>
-    const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
-    const formCampanha = document.getElementById('formCampanha');
+    <script>
+        const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+        const formCampanha = document.getElementById('formCampanha');
+        const painelSucesso = document.getElementById('painelSucesso');
+        const btnCriarCampanha = document.getElementById('btnCriarCampanha');
+        const btnCriarCampanhaText = document.getElementById('btnCriarCampanhaText');
+        const btnCriarCampanhaSpinner = document.getElementById('btnCriarCampanhaSpinner');
 
-    const appendAlert = (message, type) => {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible shadow-sm" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            '</div>'
-        ].join('');
+        const appendAlert = (message, type) => {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = [
+                `<div class="alert alert-${type} alert-dismissible shadow-sm" role="alert">`,
+                `   <div>${message}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('');
 
-        alertPlaceholder.innerHTML = '';
-        alertPlaceholder.append(wrapper);
-    }
+            alertPlaceholder.innerHTML = '';
+            alertPlaceholder.append(wrapper);
+            wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
 
-    if (formCampanha) {
-        formCampanha.addEventListener('submit', function (event) {
-            if (!this.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-                this.classList.add('was-validated');
-                return;
-            }
+        const setLoadingState = (isLoading) => {
+            btnCriarCampanha.disabled = isLoading;
+            btnCriarCampanhaText.textContent = isLoading ? 'Enviando...' : 'Criar Campanha';
+            btnCriarCampanhaSpinner.classList.toggle('d-none', !isLoading);
+        }
 
-            this.classList.add('was-validated');
-            event.preventDefault();
-            const formData = new FormData(this);
+        const mostrarSucesso = () => {
+            formCampanha.classList.add('d-none');
+            painelSucesso.classList.remove('d-none');
+            painelSucesso.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            fetch(window.location.href, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
+            let segundos = 3;
+            const contador = document.getElementById('contadorRedirect');
+            const barra = document.getElementById('barraProgresso');
+
+            const intervalo = setInterval(() => {
+                segundos -= 1;
+                contador.textContent = segundos;
+                barra.style.width = `${(segundos / 3) * 100}%`;
+
+                if (segundos <= 0) {
+                    clearInterval(intervalo);
+                    window.location.href = "{% url 'ecommerce:create_campanha' %}";
                 }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        appendAlert('Campanha criada com sucesso! Redirecionando...', 'success');
+            }, 1000);
+        }
 
-                        setTimeout(() => {
-                            window.location.href = "{% url 'ecommerce:create_campanha' %}";
-                        }, 2000);
+        if (formCampanha) {
+            formCampanha.addEventListener('submit', function (event) {
+                if (!this.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this.classList.add('was-validated');
+                    return;
+                }
 
-                    } else {
-                        appendAlert('Houve um erro ao criar a campanha. Verifique se os dados estão corretos.', 'danger');
+                this.classList.add('was-validated');
+                event.preventDefault();
+                setLoadingState(true);
+
+                const formData = new FormData(this);
+
+                fetch(window.location.href, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
                     }
                 })
-                .catch(error => {
-                    appendAlert('Erro de conexão com o servidor. Tente novamente.', 'danger');
-                });
-        });
-    }
-</script>
+                    .then(response => {
+                        if (response.ok) {
+                            mostrarSucesso();
+                        } else {
+                            setLoadingState(false);
+                            appendAlert('Houve um erro ao criar a campanha. Verifique se os dados estão corretos.', 'danger');
+                        }
+                    })
+                    .catch(error => {
+                        setLoadingState(false);
+                        appendAlert('Erro de conexão com o servidor. Tente novamente.', 'danger');
+                    });
+            });
+        }
+    </script>
 
-{% include 'includes/footer.html' %}
-{% endblock %}
+    {% include 'includes/footer.html' %}
+    {% endblock %}
